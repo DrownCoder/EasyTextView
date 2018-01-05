@@ -16,7 +16,7 @@
         android:text="@string/icon_font_home"
         app:textRight="99.9万"
         app:textPadding="12dp"
-        app:textRightSize="10dp"
+        android:clickable="true"
         app:textRightColor="@color/selector_feed_user_state_color"
         app:textLeftColor="@color/selector_feed_user_state_color2"
         app:iconColor="@color/selector_feed_user_state_color3"

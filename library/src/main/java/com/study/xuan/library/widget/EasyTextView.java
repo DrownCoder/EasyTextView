@@ -51,6 +51,8 @@ public class EasyTextView extends TextView {
     private int mCurRightColor;
     private float mLeftSize;
     private float mRightSize;
+
+    private SpannableStringBuilder mStringBuilder;
     //icon的index
     private int iconIndex = 0;
 
@@ -65,6 +67,8 @@ public class EasyTextView extends TextView {
     public EasyTextView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         this.mContext = context;
+        mStringBuilder = new SpannableStringBuilder();
+
         initAttr(context, attrs);
         init();
     }
@@ -82,99 +86,120 @@ public class EasyTextView extends TextView {
         }
         iconString = getText().toString();
         if (!TextUtils.isEmpty(mTextLeft) || !TextUtils.isEmpty(mTextRight)) {
-            SpannableStringBuilder stringBuilder = new SpannableStringBuilder(getText());
+            mStringBuilder.append(getText());
             //增加空格
             if (!TextUtils.isEmpty(mTextLeft)) {
                 if (mTextPadding != 0) {
-                    stringBuilder.insert(0, EMPTY_SPACE);
+                    mStringBuilder.insert(0, EMPTY_SPACE);
                     iconIndex++;
                 }
-                stringBuilder.insert(0, mTextLeft);
+                mStringBuilder.insert(0, mTextLeft);
                 iconIndex += mTextLeft.length();
             }
 
             if (!TextUtils.isEmpty(mTextRight)) {
                 if (mTextPadding != 0) {
-                    stringBuilder.append(EMPTY_SPACE);
+                    mStringBuilder.append(EMPTY_SPACE);
                 }
-                stringBuilder.append(mTextRight);
+                mStringBuilder.append(mTextRight);
             }
-            if (mTextPadding != 0) {
-                //设置字和icon间距
-                if (!TextUtils.isEmpty(mTextLeft)) {
-                    AbsoluteSizeSpan sizeSpan = new AbsoluteSizeSpan((int) mTextPadding);
-                    stringBuilder.setSpan(sizeSpan, iconIndex - 1, iconIndex, Spanned
-                            .SPAN_EXCLUSIVE_EXCLUSIVE);
-                }
-
-                if (!TextUtils.isEmpty(mTextRight)) {
-                    AbsoluteSizeSpan sizeSpan = new AbsoluteSizeSpan((int) mTextPadding);
-                    stringBuilder.setSpan(sizeSpan, iconIndex + 1, iconIndex + 2, Spanned
-                            .SPAN_EXCLUSIVE_EXCLUSIVE);
-                }
-
-            }
+            initTextPadding(mStringBuilder);
             //设置icon和字的颜色
-            if (mIconColor != null) {
-                int color = mIconColor.getColorForState(getDrawableState(), 0);
-                if (color != mCurIconColor) {
-                    mCurIconColor = color;
-                }
-                ForegroundColorSpan foregroundColorSpan = new ForegroundColorSpan(mCurIconColor);
-                stringBuilder.setSpan(foregroundColorSpan, iconIndex, iconIndex + 1, Spanned
-                        .SPAN_EXCLUSIVE_EXCLUSIVE);
-            }
-
-            if (!TextUtils.isEmpty(mTextLeft) && mLeftColor != null) {
-                int color = mLeftColor.getColorForState(getDrawableState(), 0);
-                if (color != mCurLeftColor) {
-                    mCurLeftColor = color;
-                }
-                int end = mTextPadding == 0 ? iconIndex : iconIndex - 1;
-                ForegroundColorSpan foregroundLeftColor = new ForegroundColorSpan(mCurLeftColor);
-                stringBuilder.setSpan(foregroundLeftColor, 0, end, Spanned
-                        .SPAN_EXCLUSIVE_EXCLUSIVE);
-            }
-
-            if (!TextUtils.isEmpty(mTextRight) && mRightColor != null) {
-                int color = mRightColor.getColorForState(getDrawableState(), 0);
-                if (color != mCurRightColor) {
-                    mCurRightColor = color;
-                }
-                int start = mTextPadding == 0 ? iconIndex + 1 : iconIndex + 2;
-                ForegroundColorSpan foregroundRightColor = new ForegroundColorSpan(mCurRightColor);
-                stringBuilder.setSpan(foregroundRightColor, start, stringBuilder.length()
-                        , Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            }
+            initIconColor(mStringBuilder);
+            initLeftTextColor(mStringBuilder);
+            initRightColor(mStringBuilder);
 
             //设置字的大小
-            if (!TextUtils.isEmpty(mTextLeft) && mLeftSize != 0) {
-                int end = mTextPadding == 0 ? iconIndex : iconIndex - 1;
-                CharacterStyle sizeSpan;
-                final int gravity = getGravity() & Gravity.VERTICAL_GRAVITY_MASK;
-                if (gravity == Gravity.CENTER_VERTICAL) {
-                    sizeSpan = new EasyVerticalCenterSpan(mLeftSize,mCurLeftColor);
-                }else{
-                    sizeSpan = new AbsoluteSizeSpan((int) mLeftSize);
-                }
-                stringBuilder.setSpan(sizeSpan, 0, end, Spanned
+            initLeftTextSize(mStringBuilder);
+            initRightTextSize(mStringBuilder);
+
+            setText(mStringBuilder);
+        }
+    }
+
+    private void initTextPadding(SpannableStringBuilder mStringBuilder) {
+        if (mTextPadding != 0) {
+            //设置字和icon间距
+            if (!TextUtils.isEmpty(mTextLeft)) {
+                AbsoluteSizeSpan sizeSpan = new AbsoluteSizeSpan((int) mTextPadding);
+                mStringBuilder.setSpan(sizeSpan, iconIndex - 1, iconIndex, Spanned
                         .SPAN_EXCLUSIVE_EXCLUSIVE);
             }
 
-            if (!TextUtils.isEmpty(mTextRight) && mRightSize != 0) {
-                int start = mTextPadding == 0 ? iconIndex + 1 : iconIndex + 2;
-                CharacterStyle sizeSpan;
-                final int gravity = getGravity() & Gravity.VERTICAL_GRAVITY_MASK;
-                if (gravity == Gravity.CENTER_VERTICAL) {
-                    sizeSpan = new EasyVerticalCenterSpan(mRightSize,mCurRightColor);
-                }else{
-                    sizeSpan = new AbsoluteSizeSpan((int) mRightSize);
-                }
-                stringBuilder.setSpan(sizeSpan, start, stringBuilder.length(), Spanned
+            if (!TextUtils.isEmpty(mTextRight)) {
+                AbsoluteSizeSpan sizeSpan = new AbsoluteSizeSpan((int) mTextPadding);
+                mStringBuilder.setSpan(sizeSpan, iconIndex + 1, iconIndex + 2, Spanned
                         .SPAN_EXCLUSIVE_EXCLUSIVE);
             }
 
-            setText(stringBuilder);
+        }
+    }
+
+    private void initRightTextSize(SpannableStringBuilder mStringBuilder) {
+        if (!TextUtils.isEmpty(mTextRight) && mRightSize != 0) {
+            int start = mTextPadding == 0 ? iconIndex + 1 : iconIndex + 2;
+            CharacterStyle sizeSpan;
+            final int gravity = getGravity() & Gravity.VERTICAL_GRAVITY_MASK;
+            if (gravity == Gravity.CENTER_VERTICAL) {
+                sizeSpan = new EasyVerticalCenterSpan(mRightSize,mCurRightColor);
+            }else{
+                sizeSpan = new AbsoluteSizeSpan((int) mRightSize);
+            }
+            mStringBuilder.setSpan(sizeSpan, start, mStringBuilder.length(), Spanned
+                    .SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
+    }
+
+    private void initLeftTextSize(SpannableStringBuilder mStringBuilder) {
+        if (!TextUtils.isEmpty(mTextLeft) && mLeftSize != 0) {
+            int end = mTextPadding == 0 ? iconIndex : iconIndex - 1;
+            CharacterStyle sizeSpan;
+            final int gravity = getGravity() & Gravity.VERTICAL_GRAVITY_MASK;
+            if (gravity == Gravity.CENTER_VERTICAL) {
+                sizeSpan = new EasyVerticalCenterSpan(mLeftSize,mCurLeftColor);
+            }else{
+                sizeSpan = new AbsoluteSizeSpan((int) mLeftSize);
+            }
+            mStringBuilder.setSpan(sizeSpan, 0, end, Spanned
+                    .SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
+    }
+
+    private void initRightColor(SpannableStringBuilder mStringBuilder) {
+        if (!TextUtils.isEmpty(mTextRight) && mRightColor != null) {
+            int color = mRightColor.getColorForState(getDrawableState(), 0);
+            if (color != mCurRightColor) {
+                mCurRightColor = color;
+            }
+            int start = mTextPadding == 0 ? iconIndex + 1 : iconIndex + 2;
+            ForegroundColorSpan foregroundRightColor = new ForegroundColorSpan(mCurRightColor);
+            mStringBuilder.setSpan(foregroundRightColor, start, mStringBuilder.length()
+                    , Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
+    }
+
+    private void initLeftTextColor(SpannableStringBuilder mStringBuilder) {
+        if (!TextUtils.isEmpty(mTextLeft) && mLeftColor != null) {
+            int color = mLeftColor.getColorForState(getDrawableState(), 0);
+            if (color != mCurLeftColor) {
+                mCurLeftColor = color;
+            }
+            int end = mTextPadding == 0 ? iconIndex : iconIndex - 1;
+            ForegroundColorSpan foregroundLeftColor = new ForegroundColorSpan(mCurLeftColor);
+            mStringBuilder.setSpan(foregroundLeftColor, 0, end, Spanned
+                    .SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
+    }
+
+    private void initIconColor(SpannableStringBuilder mStringBuilder) {
+        if (mIconColor != null) {
+            int color = mIconColor.getColorForState(getDrawableState(), 0);
+            if (color != mCurIconColor) {
+                mCurIconColor = color;
+            }
+            ForegroundColorSpan foregroundColorSpan = new ForegroundColorSpan(mCurIconColor);
+            mStringBuilder.setSpan(foregroundColorSpan, iconIndex, iconIndex + 1, Spanned
+                    .SPAN_EXCLUSIVE_EXCLUSIVE);
         }
     }
 
@@ -200,6 +225,8 @@ public class EasyTextView extends TextView {
     }
 
     private void clearText() {
+        mStringBuilder.clear();
+        mStringBuilder.clearSpans();
         setText(iconString);
         iconIndex = 0;
     }
@@ -232,8 +259,12 @@ public class EasyTextView extends TextView {
         if (mIconColor != null && mIconColor.isStateful()
                 || mLeftColor != null && mLeftColor.isStateful()
                 || mRightColor != null && mRightColor.isStateful()) {
-            clearText();
-            initIconFont();
+            /*clearText();
+            initIconFont();*/
+            initIconColor(mStringBuilder);
+            initLeftTextColor(mStringBuilder);
+            initRightColor(mStringBuilder);
+            setText(mStringBuilder);
         }
         super.drawableStateChanged();
     }
@@ -251,7 +282,7 @@ public class EasyTextView extends TextView {
      */
     public void setIconColor(int color) {
         this.mIconColor = ColorStateList.valueOf(color);
-        build();
+        initIconColor(mStringBuilder);
     }
 
     /**
@@ -275,7 +306,8 @@ public class EasyTextView extends TextView {
      */
     public void setTextLeftColor(int color) {
         this.mLeftColor = ColorStateList.valueOf(color);
-        build();
+        initLeftTextColor(mStringBuilder);
+        setText(mStringBuilder);
     }
 
     /**
@@ -283,7 +315,8 @@ public class EasyTextView extends TextView {
      */
     public void setTextRightColor(int color) {
         this.mRightColor = ColorStateList.valueOf(color);
-        build();
+        initRightColor(mStringBuilder);
+        setText(mStringBuilder);
     }
 
     /**
@@ -291,7 +324,8 @@ public class EasyTextView extends TextView {
      */
     public void setTextLeftSize(float leftSize) {
         this.mLeftSize = leftSize;
-        build();
+        initLeftTextSize(mStringBuilder);
+        setText(mStringBuilder);
     }
 
     /**
@@ -299,7 +333,8 @@ public class EasyTextView extends TextView {
      */
     public void setTextRightSize(float rightSize) {
         this.mRightSize = rightSize;
-        build();
+        initRightTextSize(mStringBuilder);
+        setText(mStringBuilder);
     }
 
     /**

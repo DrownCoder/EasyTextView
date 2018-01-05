@@ -1,5 +1,6 @@
 package com.study.xuan.easytextview;
 
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -16,6 +17,9 @@ public class MainActivity extends AppCompatActivity {
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                textView.setTextLeftColor(Color.parseColor("#ff9374"));
+                textView.setTextLeftSize(24);
+                //textView.setTextRightSize(24);
 
             }
         });
