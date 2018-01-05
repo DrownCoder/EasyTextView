@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--自定义TextView目前支持圆角和边线颜色和宽度,iconFont左右text,padding等-->
+    <declare-styleable name="EasyTextView">
+        <attr name="totalRadius"  format="dimension"/>
+        <attr name="radiusTopLeft" format="dimension"/>
+        <attr name="radiusBottomLeft" format="dimension"/>
+        <attr name="radiusTopRight" format="dimension"/>
+        <attr name="radiusBottomRight" format="dimension"/>
+        <attr name="strokeColor"  format="color"/>
+        <attr name="strokeWidth" format="dimension" />
+        <attr name="soildBac" format="color"/>
+        <attr name="textPadding" format="dimension"/>
+        <attr name="textLeft" format="string"/>
+        <attr name="textRight" format="string"/>
+        <attr name="iconColor" format="reference|color"/>
+        <attr name="textLeftColor" format="reference|color"/>
+        <attr name="textRightColor" format="reference|color"/>
+        <attr name="textLeftSize" format="dimension"/>
+        <attr name="textRightSize" format="dimension"/>
+    </declare-styleable>
+</resources>
