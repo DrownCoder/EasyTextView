@@ -9,20 +9,21 @@
     >
 
     <com.study.xuan.library.widget.EasyTextView
-        android:id="@+id/easyText"
-        style="@style/style_feed_list_user_state"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        app:textRight="@string/icon_font_home"
         android:text="@string/icon_font_home"
-        app:textRight="99.9万"
-        app:textPadding="12dp"
-        android:clickable="true"
-        app:textRightColor="@color/selector_feed_user_state_color"
-        app:textLeftColor="@color/selector_feed_user_state_color2"
-        app:iconColor="@color/selector_feed_user_state_color3"
-        app:textLeft="左边的值"
-        android:gravity="center_vertical"
-        android:visibility="visible"
+        app:textLeft="左边的"
+        android:textSize="10dp"
+        app:textPadding="20dp"
+        app:textLeftSize="30dp"
+        />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rcy"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
         />
 
 </LinearLayout>
