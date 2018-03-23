@@ -5,9 +5,14 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.UnderlineSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.study.xuan.library.widget.EasyTextView;
 
@@ -27,6 +32,23 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         textView = (EasyTextView) findViewById(R.id.easyText);
+        SpannableStringBuilder stringBuilder = new SpannableStringBuilder("呵呵呵呵呵");
+        stringBuilder.setSpan(new UnderlineSpan(), 1, 2, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        SpannableStringBuilder insert = new SpannableStringBuilder("你好啊啊啊");
+        insert.setSpan(new UnderlineSpan(), 1, 2, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        stringBuilder.insert(0, insert);
+        /*TextView text = (TextView) findViewById(R.id.text);
+        SpannableStringBuilder stringBuilder = new SpannableStringBuilder("呵呵呵呵呵");
+        SpannableStringBuilder insert = new SpannableStringBuilder("你好啊啊啊");
+        insert.setSpan(new UnderlineSpan(), 1, 2, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        stringBuilder.insert(0, insert);
+        text.setText(stringBuilder);*/
+        //textView.setTextRight(insert);
+        textView.setTextRight("啊啊啊啊");
+        textView.addSpanLeft(new ForegroundColorSpan(Color.RED), 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        textView.spanRight(new ForegroundColorSpan(Color.RED), 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                .spanRight(new ForegroundColorSpan(Color.YELLOW), 1, 2, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                .build();
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -36,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-        final List<String> data = new ArrayList();
+        /*final List<String> data = new ArrayList();
         for (int i = 0; i < 100; i++) {
             data.add("第" + i + "个");
         }
@@ -60,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
                 return data.size();
             }
         });
-
+*/
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {

@@ -6,24 +6,33 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
+    android:orientation="vertical"
     >
 
     <com.study.xuan.library.widget.EasyTextView
+        android:id="@+id/easyText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:textRight="@string/icon_font_home"
         android:text="@string/icon_font_home"
         app:textLeft="左边的"
-        android:textSize="10dp"
+        android:textSize="30dp"
         app:textPadding="20dp"
-        app:textLeftSize="30dp"
+        app:textLeftSize="34dp"
+        android:background="@color/colorPrimary"
         />
 
-    <android.support.v7.widget.RecyclerView
+    <TextView
+        android:layout_marginTop="20dp"
+        android:id="@+id/text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <!--<android.support.v7.widget.RecyclerView
         android:id="@+id/rcy"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"
-        />
+        />-->
 
 </LinearLayout>

@@ -17,7 +17,11 @@ import android.widget.TextView;
 
 import com.study.xuan.library.R;
 import com.study.xuan.library.span.EasyVerticalCenterSpan;
+import com.study.xuan.library.span.SpanContainer;
 import com.study.xuan.shapebuilder.shape.ShapeBuilder;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static android.graphics.drawable.GradientDrawable.RECTANGLE;
 
@@ -29,6 +33,7 @@ import static android.graphics.drawable.GradientDrawable.RECTANGLE;
  * 2.iconFont配合textLeft,textRight,textPadding,iconColor等
  * 3.支持不同左中右不同字号垂直居中
  * 4.支持左中上分别设置Selector，不要设置TextColor，会覆盖（一个TextView）
+ * 5.支持左右text设置span
  */
 
 public class EasyTextView extends TextView {
@@ -40,8 +45,8 @@ public class EasyTextView extends TextView {
     private int mStrokeWidth;
     private int mSoild;
     private float mTextPadding;
-    private String mTextLeft;
-    private String mTextRight;
+    private CharSequence mTextLeft;
+    private CharSequence mTextRight;
     private ColorStateList mIconColor = null;
     private int mCurIconColor;
     private String iconString;
@@ -51,6 +56,8 @@ public class EasyTextView extends TextView {
     private int mCurRightColor;
     private float mLeftSize;
     private float mRightSize;
+    private List<SpanContainer> leftContainer;
+    private List<SpanContainer> rightContainer;
     //icon的index
     private int iconIndex = 0;
 
@@ -105,6 +112,7 @@ public class EasyTextView extends TextView {
              * ==============
              */
             if (mTextPadding != 0) {
+                //设置字和icon间距
                 if (!TextUtils.isEmpty(mTextLeft)) {
                     AbsoluteSizeSpan sizeSpan = new AbsoluteSizeSpan((int) mTextPadding);
                     stringBuilder.setSpan(sizeSpan, iconIndex - 1, iconIndex, Spanned
@@ -207,6 +215,22 @@ public class EasyTextView extends TextView {
             mCurIconColor = getCurrentTextColor();
         }
 
+        if (leftContainer != null) {
+            for (SpanContainer container : leftContainer) {
+                for (Object o : container.spans) {
+                    stringBuilder.setSpan(o, container.start, container.end, container.flag);
+                }
+            }
+        }
+        if (rightContainer != null) {
+            int start = mTextPadding == 0 ? iconIndex + 1 : iconIndex + 2;
+            for (SpanContainer container : rightContainer) {
+                for (Object o : container.spans) {
+                    stringBuilder.setSpan(o, start + container.start, start + container.end, container.flag);
+                }
+            }
+        }
+
         setText(stringBuilder);
     }
 
@@ -289,7 +313,7 @@ public class EasyTextView extends TextView {
     /**
      * 设置左文案
      */
-    public void setTextLeft(String textLeft) {
+    public void setTextLeft(CharSequence textLeft) {
         this.mTextLeft = textLeft;
         build();
     }
@@ -297,7 +321,7 @@ public class EasyTextView extends TextView {
     /**
      * 设置右文案
      */
-    public void setTextRight(String textRight) {
+    public void setTextRight(CharSequence textRight) {
         this.mTextRight = textRight;
         build();
     }
@@ -339,6 +363,38 @@ public class EasyTextView extends TextView {
      */
     public void setIcon(String iconText) {
         this.iconString = iconText;
+        build();
+    }
+
+    /**
+     * 设置左边文字为多个span
+     */
+    public void addSpanLeft(List<Object> objects, int start, int end, int flags) {
+        spanLeft(objects, start, end, flags);
+        build();
+    }
+
+    /**
+     * 设置左边文字为span
+     */
+    public void addSpanLeft(Object object, int start, int end, int flags) {
+        spanLeft(object, start, end, flags);
+        build();
+    }
+
+    /**
+     * 设置右边文字为多个span
+     */
+    public void addSpanRight(List<Object> objects, int start, int end, int flags) {
+        spanRight(objects, start, end, flags);
+        build();
+    }
+
+    /**
+     * 设置右边文字为span
+     */
+    public void addSpanRight(Object object, int start, int end, int flags) {
+        spanRight(object, start, end, flags);
         build();
     }
     //=================================链式调用##需要最后调用build()==================================
@@ -404,6 +460,50 @@ public class EasyTextView extends TextView {
      */
     public EasyTextView icon(String iconText) {
         this.iconString = iconText;
+        return this;
+    }
+
+    /**
+     * 设置右边文字为多个span
+     */
+    public EasyTextView spanRight(List<Object> objects, int start, int end, int flags) {
+        if (rightContainer == null) {
+            rightContainer = new ArrayList<>();
+        }
+        this.rightContainer.add(new SpanContainer(objects, start, end, flags));
+        return this;
+    }
+
+    /**
+     * 设置右边文字为span
+     */
+    public EasyTextView spanRight(Object object, int start, int end, int flags) {
+        if (rightContainer == null) {
+            rightContainer = new ArrayList<>();
+        }
+        this.rightContainer.add(new SpanContainer(object, start, end, flags));
+        return this;
+    }
+
+    /**
+     * 设置左边文字为多个span
+     */
+    public EasyTextView spanLeft(List<Object> objects, int start, int end, int flags) {
+        if (leftContainer == null) {
+            leftContainer = new ArrayList<>();
+        }
+        this.leftContainer.add(new SpanContainer(objects, start, end, flags));
+        return this;
+    }
+
+    /**
+     * 设置左边文字为span
+     */
+    public EasyTextView spanLeft(Object object, int start, int end, int flags) {
+        if (leftContainer == null) {
+            leftContainer = new ArrayList<>();
+        }
+        this.leftContainer.add(new SpanContainer(object, start, end, flags));
         return this;
     }
 
