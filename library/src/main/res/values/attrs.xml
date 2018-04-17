@@ -2,6 +2,7 @@
 <resources>
     <!--自定义TextView目前支持圆角和边线颜色和宽度,iconFont左右text,padding等-->
     <declare-styleable name="EasyTextView">
+        <attr name="shapeType" format="integer" />
         <attr name="totalRadius"  format="dimension"/>
         <attr name="radiusTopLeft" format="dimension"/>
         <attr name="radiusBottomLeft" format="dimension"/>

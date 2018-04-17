@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;
+import android.support.annotation.ColorInt;
 import android.support.annotation.Nullable;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
@@ -39,6 +40,7 @@ import static android.graphics.drawable.GradientDrawable.RECTANGLE;
 public class EasyTextView extends TextView {
     private static final String EMPTY_SPACE = "\u3000";
     private Context mContext;
+    private int type = RECTANGLE;
     private float mRadius;
     private float mRadiusTopLeft, mRadiusTopRight, mRadiusBottomLeft, mRadiusBottomRight;
     private int mStrokeColor;
@@ -214,11 +216,19 @@ public class EasyTextView extends TextView {
         } else {
             mCurIconColor = getCurrentTextColor();
         }
-
+            /*
+             * ==============
+             * 设置左右Span，记得调用前在**所有方法**前先clearSpan(),不然直接build，上一次的span任然保留着
+             * ==============
+             */
         if (leftContainer != null) {
             for (SpanContainer container : leftContainer) {
                 for (Object o : container.spans) {
-                    stringBuilder.setSpan(o, container.start, container.end, container.flag);
+                    try {
+                        stringBuilder.setSpan(o, container.start, container.end, container.flag);
+                    } catch (Exception e) {
+                        //please check invoke clearSpan() method first
+                    }
                 }
             }
         }
@@ -226,7 +236,11 @@ public class EasyTextView extends TextView {
             int start = mTextPadding == 0 ? iconIndex + 1 : iconIndex + 2;
             for (SpanContainer container : rightContainer) {
                 for (Object o : container.spans) {
-                    stringBuilder.setSpan(o, start + container.start, start + container.end, container.flag);
+                    try {
+                        stringBuilder.setSpan(o, start + container.start, start + container.end, container.flag);
+                    } catch (Exception e) {
+                        //please check invoke clearSpan() method first
+                    }
                 }
             }
         }
@@ -246,10 +260,10 @@ public class EasyTextView extends TextView {
 
     private void setShape() {
         if (mRadius != 0) {
-            ShapeBuilder.create().Type(RECTANGLE).Radius(mRadius).Soild(mSoild).Stroke
+            ShapeBuilder.create().Type(type).Radius(mRadius).Soild(mSoild).Stroke
                     (mStrokeWidth, mStrokeColor).build(this);
         } else {
-            ShapeBuilder.create().Type(RECTANGLE).Radius(mRadiusTopLeft,
+            ShapeBuilder.create().Type(type).Radius(mRadiusTopLeft,
                     mRadiusTopRight, mRadiusBottomLeft, mRadiusBottomRight).Soild(mSoild).Stroke
                     (mStrokeWidth, mStrokeColor).build(this);
         }
@@ -262,6 +276,7 @@ public class EasyTextView extends TextView {
 
     private void initAttr(Context context, AttributeSet attrs) {
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.EasyTextView);
+        type = array.getInteger(R.styleable.EasyTextView_shapeType, 0);
         mRadius = array.getDimensionPixelOffset(R.styleable.EasyTextView_totalRadius, 0);
         mRadiusTopLeft = array.getDimensionPixelSize(R.styleable.EasyTextView_radiusTopLeft, 0);
         mRadiusTopRight = array.getDimensionPixelSize(R.styleable.EasyTextView_radiusTopRight, 0);
@@ -295,9 +310,33 @@ public class EasyTextView extends TextView {
     }
 
     /**
+     * 设置Shape Type
+     */
+    public void setType(int type) {
+        this.type = type;
+        setShape();
+    }
+
+    /**
+     * 设置边线的宽度
+     */
+    public void setStrokeWidth(int value) {
+        this.mStrokeWidth = value;
+        setShape();
+    }
+
+    /**
+     * 设置边线的颜色
+     */
+    public void setStrokeColor(@ColorInt int color) {
+        this.mStrokeColor = color;
+        setShape();
+    }
+
+    /**
      * 设置shape背景颜色
      */
-    public void setBackgroundSold(int soild) {
+    public void setSolid(int soild) {
         this.mSoild = soild;
         setShape();
     }
@@ -366,6 +405,19 @@ public class EasyTextView extends TextView {
         build();
     }
 
+
+    /**
+     * span之前需要首先clear
+     */
+    public void clearSpan() {
+        if (leftContainer != null) {
+            leftContainer.clear();
+        }
+        if (rightContainer != null) {
+            rightContainer.clear();
+        }
+    }
+
     /**
      * 设置左边文字为多个span
      */
@@ -398,6 +450,39 @@ public class EasyTextView extends TextView {
         build();
     }
     //=================================链式调用##需要最后调用build()==================================
+
+    /**
+     * 设置Shape type
+     */
+    public EasyTextView type(int type) {
+        this.type = type;
+        return this;
+    }
+
+    /**
+     * 设置边线的宽度
+     */
+    public EasyTextView strokeWidth(int width) {
+        this.mStrokeWidth = width;
+        return this;
+    }
+
+    /**
+     * 设置边线的宽度
+     */
+    public EasyTextView strokeColor(@ColorInt int color) {
+        this.mStrokeColor = color;
+        return this;
+    }
+
+    /**
+     * 设置填充的颜色
+     */
+    public EasyTextView solid(@ColorInt int color) {
+        this.mSoild = color;
+        return this;
+    }
+
 
     /**
      * 设置icon颜色
@@ -512,7 +597,8 @@ public class EasyTextView extends TextView {
      */
     public EasyTextView build() {
         clearText();
-        initIconFont();
+        //initIconFont();
+        init();
         return this;
     }
 }
