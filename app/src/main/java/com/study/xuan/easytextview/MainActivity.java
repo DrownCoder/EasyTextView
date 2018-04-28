@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
+import android.text.style.StrikethroughSpan;
 import android.text.style.UnderlineSpan;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,11 +33,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         textView = (EasyTextView) findViewById(R.id.easyText);
-        SpannableStringBuilder stringBuilder = new SpannableStringBuilder("呵呵呵呵呵");
+        /*SpannableStringBuilder stringBuilder = new SpannableStringBuilder("呵呵呵呵呵");
         stringBuilder.setSpan(new UnderlineSpan(), 1, 2, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         SpannableStringBuilder insert = new SpannableStringBuilder("你好啊啊啊");
         insert.setSpan(new UnderlineSpan(), 1, 2, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        stringBuilder.insert(0, insert);
+        stringBuilder.insert(0, insert);*/
         /*TextView text = (TextView) findViewById(R.id.text);
         SpannableStringBuilder stringBuilder = new SpannableStringBuilder("呵呵呵呵呵");
         SpannableStringBuilder insert = new SpannableStringBuilder("你好啊啊啊");
@@ -44,10 +45,11 @@ public class MainActivity extends AppCompatActivity {
         stringBuilder.insert(0, insert);
         text.setText(stringBuilder);*/
         //textView.setTextRight(insert);
-        textView.setTextRight("啊啊啊啊");
-        textView.addSpanLeft(new ForegroundColorSpan(Color.RED), 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        textView.spanRight(new ForegroundColorSpan(Color.RED), 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-                .spanRight(new ForegroundColorSpan(Color.YELLOW), 1, 2, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        textView.spanLeft(new UnderlineSpan(), 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                .spanLeft(new StrikethroughSpan(), 1, 2, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                .spanLeft(new ForegroundColorSpan(Color.RED), 1, 2, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                .spanRight(new ForegroundColorSpan(Color.RED), 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                .spanRight(new ForegroundColorSpan(Color.BLUE), 1, 2, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
                 .build();
         textView.setOnClickListener(new View.OnClickListener() {
             @Override

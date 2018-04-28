@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Author : xuan.
  * Date : 18-3-23.
- * Description : the file description
+ * Description : span info container
  */
 public class SpanContainer {
     public List<Object> spans;

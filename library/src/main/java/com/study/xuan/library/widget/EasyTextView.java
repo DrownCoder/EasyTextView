@@ -35,6 +35,11 @@ import static android.graphics.drawable.GradientDrawable.RECTANGLE;
  * 3.支持不同左中右不同字号垂直居中
  * 4.支持左中上分别设置Selector，不要设置TextColor，会覆盖（一个TextView）
  * 5.支持左右text设置span
+ *
+ * 【注意】：
+ * 多次调用建议链式调用，不会重复绘制，节省性能
+ * addSpan之前记得clearSpan
+ * 链式调用记得：build()
  */
 
 public class EasyTextView extends TextView {

@@ -1,32 +1,359 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/white"
     android:gravity="center"
-    android:orientation="vertical"
-    >
+    android:orientation="vertical">
 
-    <com.study.xuan.library.widget.EasyTextView
-        android:id="@+id/easyText"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:textRight="@string/icon_font_home"
-        android:text="@string/icon_font_home"
-        app:textLeft="左边的"
-        android:textSize="30dp"
-        app:textPadding="20dp"
-        app:textLeftSize="34dp"
-        android:background="@color/colorPrimary"
-        />
+        android:background="@color/lightblack"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp">
+
+        <com.study.xuan.library.widget.EasyTextView
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:gravity="center_vertical"
+            android:paddingLeft="10dp"
+            android:text="&#xe632;"
+            android:textSize="16dp"
+            app:iconColor="#b0bdc6"
+            app:soildBac="#f2f3f5"
+            app:strokeColor="@android:color/holo_red_light"
+            app:strokeWidth="2dp"
+            app:textPadding="8dp"
+            app:textRight="@string/search_tip"
+            app:textRightColor="#a4afb7"
+            app:textRightSize="12dp"
+            app:totalRadius="15dp" />
+
+        <com.study.xuan.library.widget.EasyTextView
+            android:id="@+id/btn_publish_comment"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="13dp"
+            android:layout_marginRight="16dp"
+            android:gravity="center_vertical"
+            android:paddingLeft="16dp"
+            android:text="&#xe645;"
+            android:textColor="#969696"
+            android:textSize="13dp"
+            app:strokeColor="@color/red"
+            app:strokeWidth="0.5dp"
+            app:textPadding="9dp"
+            app:textRight="欢迎提issues和PR"
+            app:totalRadius="1dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/lightblack"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="12dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:text="左中右：" />
+
+        <com.study.xuan.library.widget.EasyTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:text="¥"
+            android:textSize="16dp"
+            app:textPadding="3dp"
+            app:textRight="666"
+            app:soildBac="@color/lightblack"
+            app:textRightSize="32dp"
+            app:totalRadius="15dp" />
+
+        <com.study.xuan.library.widget.EasyTextView
+            android:layout_marginLeft="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:textLeft="坐标:"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            app:textLeftColor="@color/black"
+            app:iconColor="@color/black"
+            android:text="&#xe63f;"
+            app:textRight="北京"
+            android:gravity="center"
+            app:textPadding="4dp"
+            app:textRightColor="@color/black"
+            android:padding="4dp"
+            app:totalRadius="4dp"
+            app:soildBac="@color/white"
+            />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:orientation="horizontal"
+        android:background="@color/lightblack"
+        android:layout_marginTop="10dp"
+        android:gravity="center_vertical"
+        >
+        <TextView
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="span样式："
+            />
+        <com.study.xuan.library.widget.EasyTextView
+            android:id="@+id/easyText"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="&#xe80b;"
+            android:textSize="25dp"
+            app:textLeft="这真是"
+            app:strokeColor="@color/red"
+            app:strokeWidth="2dp"
+            app:textPadding="20dp"
+            app:textRight="一个View" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/lightblack"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="12dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:text="按钮：" />
+
+        <com.study.xuan.library.widget.EasyTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"
+            android:gravity="center_vertical"
+            android:padding="10dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="10dp"
+            android:text="&#xe627;"
+            android:textColor="#494949"
+            android:textSize="14dp"
+            app:iconColor="@android:color/holo_red_light"
+            app:strokeColor="@android:color/holo_red_light"
+            app:strokeWidth="1dp"
+            app:textPadding="5dp"
+            app:textRight="1.2k"
+            app:totalRadius="12dp" />
+
+        <com.study.xuan.library.widget.EasyTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"
+            android:gravity="center_vertical"
+            android:padding="10dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="10dp"
+            android:text="star"
+            android:textColor="@android:color/white"
+            android:textSize="14dp"
+            app:soildBac="@android:color/holo_red_light"
+            app:strokeColor="@android:color/holo_red_light"
+            app:strokeWidth="2dp"
+            app:textPadding="5dp"
+            app:totalRadius="15dp" />
+
+        <com.study.xuan.library.widget.EasyTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"
+            android:gravity="center_vertical"
+            android:padding="10dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="10dp"
+            android:text="&#xe627;"
+            android:textColor="#494949"
+            android:textSize="14dp"
+            app:iconColor="@android:color/holo_red_light"
+            app:strokeColor="@android:color/holo_red_light"
+            app:strokeWidth="1dp"
+            app:textLeft="star"
+            app:textPadding="5dp"
+            app:totalRadius="12dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@color/lightblack"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="12dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:text="标签：" />
+
+        <com.study.xuan.library.widget.EasyTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"
+            android:gravity="center_vertical"
+            android:padding="3dp"
+            android:text="标签1"
+            android:textColor="@android:color/white"
+            android:textSize="11dp"
+            app:soildBac="@android:color/holo_red_light"
+            app:strokeColor="@color/yellow"
+            app:strokeWidth="1.5dp"
+            app:totalRadius="6dp" />
+
+        <com.study.xuan.library.widget.EasyTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"
+            android:gravity="center"
+            android:padding="3dp"
+            android:text="&#xe627;"
+            android:textColor="@color/red"
+            android:textSize="11dp"
+            app:strokeColor="@color/red"
+            app:strokeWidth="1dp"
+            app:textPadding="4dp"
+            app:textRight="1024"
+            app:totalRadius="6dp" />
+
+        <com.study.xuan.library.widget.EasyTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"
+            android:gravity="center"
+            android:padding="3dp"
+            android:text="促销1"
+            android:textColor="@color/white"
+            android:textSize="11dp"
+            app:soildBac="#f2303c"
+            app:strokeColor="@color/red"
+            app:strokeWidth="1dp"
+            app:textPadding="4dp"
+            app:totalRadius="2dp" />
+
+        <com.study.xuan.library.widget.EasyTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"
+            android:gravity="center"
+            android:padding="3dp"
+            android:text="促销2"
+            android:textColor="#f2303c"
+            android:textSize="11dp"
+            app:soildBac="@color/white"
+            app:strokeColor="#f2303c"
+            app:strokeWidth="1dp"
+            app:textPadding="4dp"
+            app:totalRadius="2dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@color/lightblack"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="12dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:text="形状：" />
+
+        <com.study.xuan.library.widget.EasyTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:padding="10dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="10dp"
+            android:text="&#xe7a7;"
+            android:textSize="24dp"
+            app:iconColor="@color/red"
+            app:soildBac="@color/white"
+            app:strokeColor="@color/red"
+            app:strokeWidth="2dp"
+            app:textPadding="5dp"
+            app:totalRadius="12dp" />
+
+        <com.study.xuan.library.widget.EasyTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:gravity="center_vertical"
+            android:padding="10dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="10dp"
+            android:text="&#xe69e;"
+            android:textColor="@color/red"
+            android:textSize="24dp"
+            app:shapeType="1"
+            app:soildBac="@android:color/white"
+            app:strokeWidth="2dp"
+            app:totalRadius="100dp" />
+
+        <com.study.xuan.library.widget.EasyTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:gravity="center_vertical"
+            android:padding="10dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="10dp"
+            android:text="上下左右圆角不同"
+            android:textColor="#494949"
+            android:textSize="12dp"
+            app:radiusBottomLeft="15dp"
+            app:radiusBottomRight="2dp"
+            app:radiusTopLeft="15dp"
+            app:radiusTopRight="8dp"
+            app:soildBac="@color/bohegreen"
+            app:strokeColor="@color/bohegreen"
+            app:strokeWidth="10dp"
+            app:textPadding="5dp" />
+
+    </LinearLayout>
 
     <TextView
-        android:layout_marginTop="20dp"
         android:id="@+id/text"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp" />
 
     <!--<android.support.v7.widget.RecyclerView
         android:id="@+id/rcy"
