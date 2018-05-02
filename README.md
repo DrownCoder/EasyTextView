@@ -131,6 +131,8 @@ public void addSpanRight(Object object, int start, int end, int flags);
 #### More
 动态设置Shape，由[SupperShape](https://github.com/DrownCoder/SupperShape)实现，可以动态通过java代码给任何View设置Shape，不需要再写shape.xml文件，欢迎使用。
 本项目仅基于TextView进行封装，其他View可按照需求进行封装，原理比较简单，大家可以查看源码。
+    
+详细使用说明参考[Wiki](https://github.com/DrownCoder/EasyTextView/wiki)
 
 ### Future
 * 支持xml中设置文字的点击效果
