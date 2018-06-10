@@ -12,8 +12,8 @@
         <attr name="strokeWidth" format="dimension" />
         <attr name="soildBac" format="color"/>
         <attr name="textPadding" format="dimension"/>
-        <attr name="textLeft" format="string"/>
-        <attr name="textRight" format="string"/>
+        <attr name="textLeft" format="reference|string"/>
+        <attr name="textRight" format="reference|string"/>
         <attr name="iconColor" format="reference|color"/>
         <attr name="textLeftColor" format="reference|color"/>
         <attr name="textRightColor" format="reference|color"/>

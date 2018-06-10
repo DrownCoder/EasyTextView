@@ -13,6 +13,7 @@ import android.text.style.AbsoluteSizeSpan;
 import android.text.style.CharacterStyle;
 import android.text.style.ForegroundColorSpan;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.widget.TextView;
 
@@ -35,7 +36,7 @@ import static android.graphics.drawable.GradientDrawable.RECTANGLE;
  * 3.支持不同左中右不同字号垂直居中
  * 4.支持左中上分别设置Selector，不要设置TextColor，会覆盖（一个TextView）
  * 5.支持左右text设置span
- *
+ * <p>
  * 【注意】：
  * 多次调用建议链式调用，不会重复绘制，节省性能
  * addSpan之前记得clearSpan
@@ -65,6 +66,7 @@ public class EasyTextView extends TextView {
     private float mRightSize;
     private List<SpanContainer> leftContainer;
     private List<SpanContainer> rightContainer;
+    private TypedValue textValue;//左右文字支持xml中设置iconFont
     //icon的index
     private int iconIndex = 0;
 
@@ -95,6 +97,7 @@ public class EasyTextView extends TextView {
             return;
         }
         iconString = getText().toString();
+        int centerSize = iconString.length();
         SpannableStringBuilder stringBuilder = new SpannableStringBuilder(getText());
         if (!TextUtils.isEmpty(mTextLeft) || !TextUtils.isEmpty(mTextRight)) {
             //增加空格
@@ -128,7 +131,7 @@ public class EasyTextView extends TextView {
 
                 if (!TextUtils.isEmpty(mTextRight)) {
                     AbsoluteSizeSpan sizeSpan = new AbsoluteSizeSpan((int) mTextPadding);
-                    stringBuilder.setSpan(sizeSpan, iconIndex + 1, iconIndex + 2, Spanned
+                    stringBuilder.setSpan(sizeSpan, iconIndex + centerSize, iconIndex + centerSize + 1, Spanned
                             .SPAN_EXCLUSIVE_EXCLUSIVE);
                 }
 
@@ -162,7 +165,7 @@ public class EasyTextView extends TextView {
                 if (color != mCurRightColor) {
                     mCurRightColor = color;
                 }
-                int start = mTextPadding == 0 ? iconIndex + 1 : iconIndex + 2;
+                int start = mTextPadding == 0 ? iconIndex + centerSize : iconIndex + centerSize + 1;
                 ForegroundColorSpan foregroundRightColor = new ForegroundColorSpan(mCurRightColor);
                 stringBuilder.setSpan(foregroundRightColor, start, stringBuilder.length()
                         , Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -193,7 +196,7 @@ public class EasyTextView extends TextView {
              * ==============
              */
             if (!TextUtils.isEmpty(mTextRight) && mRightSize != 0) {
-                int start = mTextPadding == 0 ? iconIndex + 1 : iconIndex + 2;
+                int start = mTextPadding == 0 ? iconIndex + centerSize : iconIndex + centerSize + 1;
                 CharacterStyle sizeSpan;
                 final int gravity = getGravity() & Gravity.VERTICAL_GRAVITY_MASK;
                 if (gravity == Gravity.CENTER_VERTICAL) {
@@ -216,7 +219,7 @@ public class EasyTextView extends TextView {
                 mCurIconColor = color;
             }
             ForegroundColorSpan foregroundColorSpan = new ForegroundColorSpan(mCurIconColor);
-            stringBuilder.setSpan(foregroundColorSpan, iconIndex, iconIndex + 1, Spanned
+            stringBuilder.setSpan(foregroundColorSpan, iconIndex, iconIndex + centerSize, Spanned
                     .SPAN_EXCLUSIVE_EXCLUSIVE);
         } else {
             mCurIconColor = getCurrentTextColor();
@@ -238,7 +241,7 @@ public class EasyTextView extends TextView {
             }
         }
         if (rightContainer != null) {
-            int start = mTextPadding == 0 ? iconIndex + 1 : iconIndex + 2;
+            int start = mTextPadding == 0 ? iconIndex + centerSize : iconIndex + centerSize + 1;
             for (SpanContainer container : rightContainer) {
                 for (Object o : container.spans) {
                     try {
@@ -280,6 +283,7 @@ public class EasyTextView extends TextView {
     }
 
     private void initAttr(Context context, AttributeSet attrs) {
+        textValue = new TypedValue();
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.EasyTextView);
         type = array.getInteger(R.styleable.EasyTextView_shapeType, 0);
         mRadius = array.getDimensionPixelOffset(R.styleable.EasyTextView_totalRadius, 0);
@@ -293,8 +297,28 @@ public class EasyTextView extends TextView {
         mStrokeWidth = array.getDimensionPixelOffset(R.styleable.EasyTextView_strokeWidth, 0);
         mSoild = array.getColor(R.styleable.EasyTextView_soildBac, -1);
         mTextPadding = array.getDimensionPixelOffset(R.styleable.EasyTextView_textPadding, 0);
-        mTextLeft = array.getString(R.styleable.EasyTextView_textLeft);
-        mTextRight = array.getString(R.styleable.EasyTextView_textRight);
+        boolean has = array.getValue(R.styleable.EasyTextView_textLeft, textValue);
+        if (has) {
+            if (textValue.type == TypedValue.TYPE_REFERENCE) {
+                //文字引用
+                mTextLeft = mContext.getResources().getText(textValue.resourceId);
+            }else{
+                //纯文字
+                mTextLeft = textValue.string;
+            }
+        }
+        has = array.getValue(R.styleable.EasyTextView_textRight, textValue);
+        if (has) {
+            if (textValue.type == TypedValue.TYPE_REFERENCE) {
+                //文字引用
+                mTextRight = mContext.getResources().getText(textValue.resourceId);
+            }else{
+                //纯文字
+                mTextRight = textValue.string;
+            }
+        }
+        //mTextLeft = array.getString(R.styleable.EasyTextView_textLeft);
+        //mTextRight = array.getString(R.styleable.EasyTextView_textRight);
         mIconColor = array.getColorStateList(R.styleable.EasyTextView_iconColor);
         mLeftColor = array.getColorStateList(R.styleable.EasyTextView_textLeftColor);
         mRightColor = array.getColorStateList(R.styleable.EasyTextView_textRightColor);
