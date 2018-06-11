@@ -12,6 +12,7 @@ import android.text.TextUtils;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.CharacterStyle;
 import android.text.style.ForegroundColorSpan;
+import android.text.style.StyleSpan;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -66,6 +67,9 @@ public class EasyTextView extends TextView {
     private float mRightSize;
     private List<SpanContainer> leftContainer;
     private List<SpanContainer> rightContainer;
+    private int mTextLeftStyle;
+    private int mTextRightStyle;
+    private int mTextCenterStyle;
     private TypedValue textValue;//左右文字支持xml中设置iconFont
     //icon的index
     private int iconIndex = 0;
@@ -136,77 +140,18 @@ public class EasyTextView extends TextView {
                 }
 
             }
-
             /*
              * ==============
-             * 设置左边字的颜色
+             * 设置左边文字样式
              * ==============
              */
-            if (!TextUtils.isEmpty(mTextLeft) && mLeftColor != null) {
-                int color = mLeftColor.getColorForState(getDrawableState(), 0);
-                if (color != mCurLeftColor) {
-                    mCurLeftColor = color;
-                }
-                int end = mTextPadding == 0 ? iconIndex : iconIndex - 1;
-                ForegroundColorSpan foregroundLeftColor = new ForegroundColorSpan(mCurLeftColor);
-                stringBuilder.setSpan(foregroundLeftColor, 0, end, Spanned
-                        .SPAN_EXCLUSIVE_EXCLUSIVE);
-            } else {
-                mCurLeftColor = getCurrentTextColor();
-            }
-
+            setLeftTextAttr(stringBuilder);
             /*
              * ==============
-             * 设置右边字的颜色
+             * 设置右边文字样式
              * ==============
              */
-            if (!TextUtils.isEmpty(mTextRight) && mRightColor != null) {
-                int color = mRightColor.getColorForState(getDrawableState(), 0);
-                if (color != mCurRightColor) {
-                    mCurRightColor = color;
-                }
-                int start = mTextPadding == 0 ? iconIndex + centerSize : iconIndex + centerSize + 1;
-                ForegroundColorSpan foregroundRightColor = new ForegroundColorSpan(mCurRightColor);
-                stringBuilder.setSpan(foregroundRightColor, start, stringBuilder.length()
-                        , Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            } else {
-                mCurRightColor = getCurrentTextColor();
-            }
-
-            /*
-             * ==============
-             * 设置左边字的大小
-             * ==============
-             */
-            if (!TextUtils.isEmpty(mTextLeft) && mLeftSize != 0) {
-                int end = mTextPadding == 0 ? iconIndex : iconIndex - 1;
-                CharacterStyle sizeSpan;
-                final int gravity = getGravity() & Gravity.VERTICAL_GRAVITY_MASK;
-                if (gravity == Gravity.CENTER_VERTICAL) {
-                    sizeSpan = new EasyVerticalCenterSpan(mLeftSize, mCurLeftColor);
-                } else {
-                    sizeSpan = new AbsoluteSizeSpan((int) mLeftSize);
-                }
-                stringBuilder.setSpan(sizeSpan, 0, end, Spanned
-                        .SPAN_EXCLUSIVE_EXCLUSIVE);
-            }
-            /*
-             * ==============
-             * 设置右边字的大小
-             * ==============
-             */
-            if (!TextUtils.isEmpty(mTextRight) && mRightSize != 0) {
-                int start = mTextPadding == 0 ? iconIndex + centerSize : iconIndex + centerSize + 1;
-                CharacterStyle sizeSpan;
-                final int gravity = getGravity() & Gravity.VERTICAL_GRAVITY_MASK;
-                if (gravity == Gravity.CENTER_VERTICAL) {
-                    sizeSpan = new EasyVerticalCenterSpan(mRightSize, mCurRightColor);
-                } else {
-                    sizeSpan = new AbsoluteSizeSpan((int) mRightSize);
-                }
-                stringBuilder.setSpan(sizeSpan, start, stringBuilder.length(), Spanned
-                        .SPAN_EXCLUSIVE_EXCLUSIVE);
-            }
+            setRightTextAttr(centerSize, stringBuilder);
         }
             /*
              * ==============
@@ -224,6 +169,12 @@ public class EasyTextView extends TextView {
         } else {
             mCurIconColor = getCurrentTextColor();
         }
+            /*
+             * ==============
+             * 设置icon的字的样式
+             * ==============
+             */
+        initTextStyle(mTextCenterStyle, stringBuilder, iconIndex, iconIndex + centerSize);
             /*
              * ==============
              * 设置左右Span，记得调用前在**所有方法**前先clearSpan(),不然直接build，上一次的span任然保留着
@@ -254,6 +205,104 @@ public class EasyTextView extends TextView {
         }
 
         setText(stringBuilder);
+    }
+
+    private void setRightTextAttr(int centerSize, SpannableStringBuilder stringBuilder) {
+        if (!TextUtils.isEmpty(mTextRight) && mRightSize != 0) {
+            int start = mTextPadding == 0 ? iconIndex + centerSize : iconIndex + centerSize + 1;
+           /*
+            * ==============
+            * 设置右边字的粗体和斜体
+            * ==============
+            */
+            initTextStyle(mTextRightStyle, stringBuilder, start, stringBuilder.length());
+           /*
+            * ==============
+            * 设置右边字的颜色
+            * ==============
+            */
+            initTextRightColor(stringBuilder, start);
+           /*
+            * ==============
+            * 设置右边字的大小
+            * ==============
+            */
+            initTextSize(stringBuilder, start, stringBuilder.length(), mRightSize, mCurRightColor);
+        }
+    }
+
+    private void initTextRightColor(SpannableStringBuilder stringBuilder, int start) {
+        if (mRightColor != null) {
+            int color = mRightColor.getColorForState(getDrawableState(), 0);
+            if (color != mCurRightColor) {
+                mCurRightColor = color;
+            }
+            ForegroundColorSpan foregroundRightColor = new ForegroundColorSpan(mCurRightColor);
+            stringBuilder.setSpan(foregroundRightColor, start, stringBuilder.length()
+                    , Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        } else {
+            mCurRightColor = getCurrentTextColor();
+        }
+    }
+
+    private void setLeftTextAttr(SpannableStringBuilder stringBuilder) {
+        if (!TextUtils.isEmpty(mTextLeft)) {
+            int end = mTextPadding == 0 ? iconIndex : iconIndex - 1;
+            /*
+             * ==============
+             * 设置左边字的粗体和斜体
+             * ==============
+             */
+            initTextStyle(mTextLeftStyle, stringBuilder, 0, end);
+            /*
+             * ==============
+             * 设置左边字的颜色
+             * ==============
+             */
+            initTextLeftColor(stringBuilder, end);
+            /*
+             * ==============
+             * 设置左边字的大小
+             * ==============
+             */
+            initTextSize(stringBuilder, 0, end, mLeftSize, mCurLeftColor);
+        }
+    }
+
+    private void initTextSize(SpannableStringBuilder stringBuilder, int start, int end, float textSize, int mCurColor) {
+        if (textSize != 0) {
+            CharacterStyle sizeSpan;
+            final int gravity = getGravity() & Gravity.VERTICAL_GRAVITY_MASK;
+            if (gravity == Gravity.CENTER_VERTICAL) {
+                sizeSpan = new EasyVerticalCenterSpan(textSize, mCurColor);
+            } else {
+                sizeSpan = new AbsoluteSizeSpan((int) textSize);
+            }
+            stringBuilder.setSpan(sizeSpan, start, end, Spanned
+                    .SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
+    }
+
+    private void initTextLeftColor(SpannableStringBuilder stringBuilder, int end) {
+        if (mLeftColor != null) {
+            int color = mLeftColor.getColorForState(getDrawableState(), 0);
+            if (color != mCurLeftColor) {
+                mCurLeftColor = color;
+            }
+            ForegroundColorSpan foregroundLeftColor = new ForegroundColorSpan(mCurLeftColor);
+            stringBuilder.setSpan(foregroundLeftColor, 0, end, Spanned
+                    .SPAN_EXCLUSIVE_EXCLUSIVE);
+        } else {
+            mCurLeftColor = getCurrentTextColor();
+        }
+    }
+
+    private void initTextStyle(int textStyle, SpannableStringBuilder stringBuilder, int start, int end) {
+        StyleSpan span;
+        if (textStyle != Typeface.NORMAL) {
+            span = new StyleSpan(textStyle);
+            stringBuilder.setSpan(span, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
     }
 
     private void initShape() {
@@ -302,7 +351,7 @@ public class EasyTextView extends TextView {
             if (textValue.type == TypedValue.TYPE_REFERENCE) {
                 //文字引用
                 mTextLeft = mContext.getResources().getText(textValue.resourceId);
-            }else{
+            } else {
                 //纯文字
                 mTextLeft = textValue.string;
             }
@@ -312,7 +361,7 @@ public class EasyTextView extends TextView {
             if (textValue.type == TypedValue.TYPE_REFERENCE) {
                 //文字引用
                 mTextRight = mContext.getResources().getText(textValue.resourceId);
-            }else{
+            } else {
                 //纯文字
                 mTextRight = textValue.string;
             }
@@ -324,6 +373,9 @@ public class EasyTextView extends TextView {
         mRightColor = array.getColorStateList(R.styleable.EasyTextView_textRightColor);
         mLeftSize = array.getDimensionPixelSize(R.styleable.EasyTextView_textLeftSize, 0);
         mRightSize = array.getDimensionPixelSize(R.styleable.EasyTextView_textRightSize, 0);
+        mTextLeftStyle = array.getInt(R.styleable.EasyTextView_textLeftStyle, Typeface.NORMAL);
+        mTextRightStyle = array.getInt(R.styleable.EasyTextView_textRightStyle, Typeface.NORMAL);
+        mTextCenterStyle = array.getInt(R.styleable.EasyTextView_textCenterStyle, Typeface.NORMAL);
         array.recycle();
     }
 

@@ -2,7 +2,11 @@
 <resources>
     <!--自定义TextView目前支持圆角和边线颜色和宽度,iconFont左右text,padding等-->
     <declare-styleable name="EasyTextView">
-        <attr name="shapeType" format="integer" />
+        <attr name="shapeType" format="integer|enum" >
+            <enum name="rectangle" value="0" />
+            <enum name="oval" value="1" />
+            <enum name="LINE" value="2" />
+        </attr>
         <attr name="totalRadius"  format="dimension"/>
         <attr name="radiusTopLeft" format="dimension"/>
         <attr name="radiusBottomLeft" format="dimension"/>
@@ -14,6 +18,21 @@
         <attr name="textPadding" format="dimension"/>
         <attr name="textLeft" format="reference|string"/>
         <attr name="textRight" format="reference|string"/>
+        <attr name="textLeftStyle">
+            <enum name="normal" value="0" />
+            <enum name="bold" value="1" />
+            <enum name="italic" value="2" />
+        </attr>
+        <attr name="textRightStyle">
+            <enum name="normal" value="0" />
+            <enum name="bold" value="1" />
+            <enum name="italic" value="2" />
+        </attr>
+        <attr name="textCenterStyle">
+            <enum name="normal" value="0" />
+            <enum name="bold" value="1" />
+            <enum name="italic" value="2" />
+        </attr>
         <attr name="iconColor" format="reference|color"/>
         <attr name="textLeftColor" format="reference|color"/>
         <attr name="textRightColor" format="reference|color"/>
