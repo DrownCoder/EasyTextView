@@ -486,6 +486,30 @@ public class EasyTextView extends TextView {
         build();
     }
 
+    /**
+     * 设置左文案样式
+     */
+    public void setTextLeftStyle(int textLeftStyle) {
+        this.mTextLeftStyle = textLeftStyle;
+        build();
+    }
+
+    /**
+     * 设置右文案样式
+     */
+    public void setTextRightStyle(int textRightStyle) {
+        this.mTextRightStyle = textRightStyle;
+        build();
+    }
+
+    /**
+     * 设置中间文案样式
+     */
+    public void setTextCenterStyle(int textCenterStyle) {
+        this.mTextCenterStyle = textCenterStyle;
+        build();
+    }
+
 
     /**
      * span之前需要首先clear
@@ -626,6 +650,30 @@ public class EasyTextView extends TextView {
      */
     public EasyTextView icon(String iconText) {
         this.iconString = iconText;
+        return this;
+    }
+
+    /**
+     * 设置左文案样式
+     */
+    public EasyTextView textLeftStyle(int textLeftStyle) {
+        this.mTextLeftStyle = textLeftStyle;
+        return this;
+    }
+
+    /**
+     * 设置右文案样式
+     */
+    public EasyTextView textRightStyle(int textRightStyle) {
+        this.mTextRightStyle = textRightStyle;
+        return this;
+    }
+
+    /**
+     * 设置中间文案样式
+     */
+    public EasyTextView textCenterStyle(int textCenterStyle) {
+        this.mTextCenterStyle = textCenterStyle;
         return this;
     }
 

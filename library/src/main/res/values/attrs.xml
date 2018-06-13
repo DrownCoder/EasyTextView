@@ -19,17 +19,14 @@
         <attr name="textLeft" format="reference|string"/>
         <attr name="textRight" format="reference|string"/>
         <attr name="textLeftStyle">
-            <enum name="normal" value="0" />
             <enum name="bold" value="1" />
             <enum name="italic" value="2" />
         </attr>
         <attr name="textRightStyle">
-            <enum name="normal" value="0" />
             <enum name="bold" value="1" />
             <enum name="italic" value="2" />
         </attr>
         <attr name="textCenterStyle">
-            <enum name="normal" value="0" />
             <enum name="bold" value="1" />
             <enum name="italic" value="2" />
         </attr>
