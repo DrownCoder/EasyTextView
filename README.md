@@ -7,14 +7,14 @@
 * 还在苦于iconfont左右两边还需要设置文字只能加两个TextView？
 * 还在苦于需要设置各种大同小异的边框而new Shape文件吗？
 * 还在苦于设置点击效果而多种样式吗？
->一个基于iconfont拓展的支持多种功能的轻量级TextView，减少布局嵌套，减少定义shape文件，基本涵盖常规需要多个TextView实现的功能。
+>一个基于iconfont拓展的支持多种功能的轻量级TextView，减少布局嵌套，减少定义shape文件，基本涵盖常规需要多个TextView实现的功能。(最多支持左中右三段文字)
 ### 支持的特性
 * 使用简单
 * 链式调用
 * 支持给iconfont左右设置文字
 * 支持xml中直接设置常用shape的所有属性
-* 支持分别设置iconfont，左文字，右文字的颜色（Selector也可以）
-* 支持分别设置iconfont，左文字，右文字字号
+* 支持分别设置iconfont，左文字，右文字的颜色（Selector也可以）、字号、样式（粗体、斜体）
+* 支持左边文字，中间文字，右边文字都设置iconfont
 * 支持文字和iconfont居中
 * 支持左右文字设置多个span
 * 支持设置iconfont和左右文字的padding
@@ -35,11 +35,11 @@ allprojects {
 Step 2. Add the dependency
 ```
 dependencies {
-		implementation 'com.github.DrownCoder:EasyTextView:v1.0'
+		implementation 'com.github.DrownCoder:EasyTextView:v1.1'
 	}
 ```
 ### 效果
- <img src="https://github.com/DrownCoder/EasyTextView/blob/master/image.png" width = "362" height = "642" alt="自由发挥想象空间" align=center />  
+ <img src="https://github.com/DrownCoder/EasyTextView/blob/master/WX20180614-214347%402x.png" width = "362" height = "642" alt="自由发挥想象空间" align=center />  
  
 ### 使用  
 #### xml属性
@@ -93,6 +93,21 @@ dependencies {
         <attr name="textLeftSize" format="dimension"/>
         //右边文字的大小（iconfont的大小用TextSize即可，不会覆盖）
         <attr name="textRightSize" format="dimension"/>
+	//设置左边文字样式
+	<attr name="textLeftStyle">
+            <enum name="bold" value="1" />
+            <enum name="italic" value="2" />
+        </attr>
+	//设置右边文字样式
+        <attr name="textRightStyle">
+            <enum name="bold" value="1" />
+            <enum name="italic" value="2" />
+        </attr>
+	//设置中间文字样式
+        <attr name="textCenterStyle">
+            <enum name="bold" value="1" />
+            <enum name="italic" value="2" />
+        </attr>
     </declare-styleable>
 ```
 #### java Api
@@ -122,6 +137,9 @@ public void setTextRightColor(int color);
 public void setTextLeftSize(float leftSize);
 public void setTextRightSize(float rightSize);
 public void setIcon(String iconText);
+public EasyTextView textLeftStyle(int textLeftStyle);
+public EasyTextView textRightStyle(int textRightStyle);
+public EasyTextView textCenterStyle(int textCenterStyle);
 public void clearSpan();
 public void addSpanLeft(Object object, int start, int end, int flags);
 public void addSpanLeft(List<Object> objects, int start, int end, int flags);
@@ -134,9 +152,13 @@ public void addSpanRight(Object object, int start, int end, int flags);
     
 详细使用说明参考[Wiki](https://github.com/DrownCoder/EasyTextView/wiki)
 
-### Future
-* 支持xml中设置文字的点击效果
-* 支持iconfont上下设置文字
+### 版本更新
+v1.1 
+>1.中间的文字支持字符串(原来只支持iconfont)  
+>2.左边文字，中间文字，右边文字分别支持粗体和斜体  
+>3.左边文字，中间文字，右边文字支持xml中设置iconfont(原来xml中只支持中间文字设置)  
+>4.优化了代码  
+[详细版本信息](https://github.com/DrownCoder/EasyTextView/releases)
 
 ### License
 ```
