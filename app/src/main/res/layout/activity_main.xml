@@ -349,6 +349,63 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@color/lightblack"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="12dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:text="玩坏：" />
+
+        <com.study.xuan.library.widget.EasyTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:padding="10dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="10dp"
+            app:textLeft="左边粗体"
+            android:text="中间斜体"
+            app:textRight="右边正常"
+            app:textLeftStyle="bold"
+            app:textCenterStyle="italic"
+            android:textSize="12dp"
+            app:iconColor="@color/red"
+            app:soildBac="@color/white"
+            app:strokeColor="@color/red"
+            app:strokeWidth="2dp"
+            app:textPadding="5dp"
+            app:totalRadius="12dp" />
+
+        <com.study.xuan.library.widget.EasyTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:gravity="center_vertical"
+            android:padding="5dp"
+            android:text="中间文字"
+            app:textCenterStyle="bold"
+            android:textColor="#494949"
+            app:textLeft="@string/icon_font"
+            app:textRight="@string/icon_font"
+            android:textSize="12dp"
+            app:radiusBottomLeft="15dp"
+            app:radiusBottomRight="2dp"
+            app:radiusTopLeft="15dp"
+            app:radiusTopRight="8dp"
+            app:soildBac="@color/bohegreen"
+            app:strokeColor="@color/bohegreen"
+            app:textPadding="5dp" />
+
+    </LinearLayout>
+
     <TextView
         android:id="@+id/text"
         android:layout_width="wrap_content"

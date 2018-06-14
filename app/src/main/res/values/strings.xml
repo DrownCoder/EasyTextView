@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">EasyTextView</string>
     <string name="search_tip">热门搜索</string>
+    <string name="icon_font">&#xe63f;</string>
 </resources>
