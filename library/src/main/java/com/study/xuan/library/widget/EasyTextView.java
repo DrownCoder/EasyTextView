@@ -208,7 +208,7 @@ public class EasyTextView extends TextView {
     }
 
     private void setRightTextAttr(int centerSize, SpannableStringBuilder stringBuilder) {
-        if (!TextUtils.isEmpty(mTextRight) && mRightSize != 0) {
+        if (!TextUtils.isEmpty(mTextRight)) {
             int start = mTextPadding == 0 ? iconIndex + centerSize : iconIndex + centerSize + 1;
            /*
             * ==============
