@@ -35,7 +35,7 @@ allprojects {
 Step 2. Add the dependency
 ```
 dependencies {
-		implementation 'com.github.DrownCoder:EasyTextView:v1.11'
+		implementation 'com.github.DrownCoder:EasyTextView:v1.12'
 	}
 ```
 ### 效果
