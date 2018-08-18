@@ -35,7 +35,7 @@ allprojects {
 Step 2. Add the dependency
 ```
 dependencies {
-		implementation 'com.github.DrownCoder:EasyTextView:v1.1'
+		implementation 'com.github.DrownCoder:EasyTextView:v1.11'
 	}
 ```
 ### 效果
@@ -157,7 +157,10 @@ v1.1
 >1.中间的文字支持字符串(原来只支持iconfont)  
 >2.左边文字，中间文字，右边文字分别支持粗体和斜体  
 >3.左边文字，中间文字，右边文字支持xml中设置iconfont(原来xml中只支持中间文字设置)  
->4.优化了代码   
+>4.优化了代码  
+
+v1.11  
+>修复右侧文字颜色失效bug
 
 [详细版本信息](https://github.com/DrownCoder/EasyTextView/releases)
 
