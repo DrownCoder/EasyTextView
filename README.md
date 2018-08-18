@@ -156,7 +156,7 @@ public void addSpanRight(Object object, int start, int end, int flags);
 ### 版本更新
 v1.12 
 >1.修复center_vertical时文字重叠问题  
->2.新增autoMaxHeight属性  
+>2.新增boolean型autoMaxHeight属性,当为true时解决以下问题  
 >-修复左右文字大小大于中间文字大小高度不准问题  
 >-修复英文由于基线导致展示不全问题  
 
