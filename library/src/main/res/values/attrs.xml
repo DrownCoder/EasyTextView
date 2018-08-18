@@ -35,5 +35,6 @@
         <attr name="textRightColor" format="reference|color"/>
         <attr name="textLeftSize" format="dimension"/>
         <attr name="textRightSize" format="dimension"/>
+        <attr name="autoMaxHeight" format="boolean"/>
     </declare-styleable>
 </resources>

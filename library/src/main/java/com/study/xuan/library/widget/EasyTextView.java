@@ -73,6 +73,8 @@ public class EasyTextView extends TextView {
     private TypedValue textValue;//左右文字支持xml中设置iconFont
     //icon的index
     private int iconIndex = 0;
+    //是否开启计算文字边界，开启后会以最大文字大小为View高度，并且会增加部分文字高度，防止部分英文类型y,g由于基线的原因无法显示完全
+    private boolean autoMaxHeight = false;
 
     public EasyTextView(Context context) {
         this(context, null);
@@ -135,7 +137,8 @@ public class EasyTextView extends TextView {
 
                 if (!TextUtils.isEmpty(mTextRight)) {
                     AbsoluteSizeSpan sizeSpan = new AbsoluteSizeSpan((int) mTextPadding);
-                    stringBuilder.setSpan(sizeSpan, iconIndex + centerSize, iconIndex + centerSize + 1, Spanned
+                    stringBuilder.setSpan(sizeSpan, iconIndex + centerSize, iconIndex +
+                            centerSize + 1, Spanned
                             .SPAN_EXCLUSIVE_EXCLUSIVE);
                 }
 
@@ -196,7 +199,8 @@ public class EasyTextView extends TextView {
             for (SpanContainer container : rightContainer) {
                 for (Object o : container.spans) {
                     try {
-                        stringBuilder.setSpan(o, start + container.start, start + container.end, container.flag);
+                        stringBuilder.setSpan(o, start + container.start, start + container.end,
+                                container.flag);
                     } catch (Exception e) {
                         //please check invoke clearSpan() method first
                     }
@@ -269,7 +273,8 @@ public class EasyTextView extends TextView {
         }
     }
 
-    private void initTextSize(SpannableStringBuilder stringBuilder, int start, int end, float textSize, int mCurColor) {
+    private void initTextSize(SpannableStringBuilder stringBuilder, int start, int end, float
+            textSize, int mCurColor) {
         if (textSize != 0) {
             CharacterStyle sizeSpan;
             final int gravity = getGravity() & Gravity.VERTICAL_GRAVITY_MASK;
@@ -297,7 +302,8 @@ public class EasyTextView extends TextView {
         }
     }
 
-    private void initTextStyle(int textStyle, SpannableStringBuilder stringBuilder, int start, int end) {
+    private void initTextStyle(int textStyle, SpannableStringBuilder stringBuilder, int start,
+                               int end) {
         StyleSpan span;
         if (textStyle != Typeface.NORMAL) {
             span = new StyleSpan(textStyle);
@@ -376,6 +382,7 @@ public class EasyTextView extends TextView {
         mTextLeftStyle = array.getInt(R.styleable.EasyTextView_textLeftStyle, Typeface.NORMAL);
         mTextRightStyle = array.getInt(R.styleable.EasyTextView_textRightStyle, Typeface.NORMAL);
         mTextCenterStyle = array.getInt(R.styleable.EasyTextView_textCenterStyle, Typeface.NORMAL);
+        autoMaxHeight = array.getBoolean(R.styleable.EasyTextView_autoMaxHeight, false);
         array.recycle();
     }
 
@@ -729,5 +736,18 @@ public class EasyTextView extends TextView {
         //initIconFont();
         init();
         return this;
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        if (autoMaxHeight) {
+            int lead = 0;
+            if (getPaint() != null) {
+                lead = getPaint().getFontMetricsInt().leading * 3;
+            }
+            setMeasuredDimension(getMeasuredWidth(), (int) (Math.max(getMeasuredHeight(), Math.max
+                    (mLeftSize, mRightSize)) + lead));
+        }
     }
 }
