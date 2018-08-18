@@ -108,6 +108,7 @@ dependencies {
             <enum name="bold" value="1" />
             <enum name="italic" value="2" />
         </attr>
+	<attr name="autoMaxHeight" format="boolean"/>
     </declare-styleable>
 ```
 #### java Api
@@ -153,14 +154,20 @@ public void addSpanRight(Object object, int start, int end, int flags);
 详细使用说明参考[Wiki](https://github.com/DrownCoder/EasyTextView/wiki)
 
 ### 版本更新
+v1.12 
+>1.修复center_vertical时文字重叠问题  
+>2.新增autoMaxHeight属性  
+>-修复左右文字大小大于中间文字大小高度不准问题  
+>-修复英文由于基线导致展示不全问题  
+
+v1.11  
+>修复右侧文字颜色失效bug
+
 v1.1 
 >1.中间的文字支持字符串(原来只支持iconfont)  
 >2.左边文字，中间文字，右边文字分别支持粗体和斜体  
 >3.左边文字，中间文字，右边文字支持xml中设置iconfont(原来xml中只支持中间文字设置)  
 >4.优化了代码  
-
-v1.11  
->修复右侧文字颜色失效bug
 
 [详细版本信息](https://github.com/DrownCoder/EasyTextView/releases)
 
