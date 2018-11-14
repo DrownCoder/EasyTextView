@@ -1,6 +1,6 @@
 基于iconfont拓展的TextView(支持左右设置Text,设置Shape,设置span等)  
 
-![Wercker](https://img.shields.io/wercker/ci/wercker/docs.svg)
+![continuousphp](https://img.shields.io/continuousphp/git-hub/doctrine/dbal/master.svg)
 [![](https://jitpack.io/v/DrownCoder/EasyTextView.svg)](https://jitpack.io/#DrownCoder/EasyTextView)
 ![Hex.pm](https://img.shields.io/hexpm/l/plug.svg)
 ### 项目介绍
