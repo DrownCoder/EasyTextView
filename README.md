@@ -1,7 +1,7 @@
 基于iconfont拓展的TextView(支持左右设置Text,设置Shape,设置span等)  
 
 ![continuousphp](https://img.shields.io/continuousphp/git-hub/doctrine/dbal/master.svg)
-[![](https://jitpack.io/v/DrownCoder/EasyTextView.svg)](https://jitpack.io/#DrownCoder/EasyTextView)
+[![](https://jitpack.io/v/drowncoder/easytextview.svg)](https://jitpack.io/#drowncoder/easytextview)
 ![Hex.pm](https://img.shields.io/hexpm/l/plug.svg)
 ### 项目介绍
 * 还在苦于iconfont左右两边还需要设置文字只能加两个TextView？
@@ -35,7 +35,7 @@ allprojects {
 Step 2. Add the dependency
 ```
 dependencies {
-		implementation 'com.github.DrownCoder:EasyTextView:v1.12'
+		implementation 'com.github.DrownCoder:EasyTextView:v1.13'
 	}
 ```
 ### 效果
@@ -154,6 +154,11 @@ public void addSpanRight(Object object, int start, int end, int flags);
 详细使用说明参考[Wiki](https://github.com/DrownCoder/EasyTextView/wiki)
 
 ### 版本更新
+v1.13 
+>1.修改icon类型从String改为charsequence  
+>2.进一步拓展JAVA的API  
+>3.补充Error信息  
+
 v1.12 
 >1.修复center_vertical时文字重叠问题  
 >2.新增boolean型autoMaxHeight属性,当为true时解决以下问题  
