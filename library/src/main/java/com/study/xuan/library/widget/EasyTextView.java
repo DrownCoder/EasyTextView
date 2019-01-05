@@ -6,6 +6,7 @@ import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.support.annotation.ColorInt;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextUtils;
@@ -14,6 +15,7 @@ import android.text.style.CharacterStyle;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.widget.TextView;
@@ -37,6 +39,10 @@ import static android.graphics.drawable.GradientDrawable.RECTANGLE;
  * 3.支持不同左中右不同字号垂直居中
  * 4.支持左中上分别设置Selector，不要设置TextColor，会覆盖（一个TextView）
  * 5.支持左右text设置span
+ * //2018.6.19
+ * 6.支持左中右xml中设置iconFont
+ * 7.左中右支持多长度文字
+ * 8.左中右支持粗体斜体
  * <p>
  * 【注意】：
  * 多次调用建议链式调用，不会重复绘制，节省性能
@@ -58,7 +64,8 @@ public class EasyTextView extends TextView {
     private CharSequence mTextRight;
     private ColorStateList mIconColor = null;
     private int mCurIconColor;
-    private String iconString;
+    //    private String iconString;
+    private CharSequence iconString;
     private ColorStateList mLeftColor = null;
     private int mCurLeftColor;
     private ColorStateList mRightColor = null;
@@ -74,7 +81,7 @@ public class EasyTextView extends TextView {
     //icon的index
     private int iconIndex = 0;
     //是否开启计算文字边界，开启后会以最大文字大小为View高度，并且会增加部分文字高度，防止部分英文类型y,g由于基线的原因无法显示完全
-    private boolean autoMaxHeight = false;
+    private boolean autoMaxHeight;
 
     public EasyTextView(Context context) {
         this(context, null);
@@ -100,6 +107,8 @@ public class EasyTextView extends TextView {
         try {
             setTypeface(Typeface.createFromAsset(getContext().getAssets(), "iconfont.ttf"));
         } catch (Exception e) {
+            Log.e("EasyTextView", "can't find \'iconfont.ttf\' in assets\n在assets文件夹下没有找到iconfont" +
+                    ".ttf文件");
             return;
         }
         iconString = getText().toString();
@@ -137,8 +146,7 @@ public class EasyTextView extends TextView {
 
                 if (!TextUtils.isEmpty(mTextRight)) {
                     AbsoluteSizeSpan sizeSpan = new AbsoluteSizeSpan((int) mTextPadding);
-                    stringBuilder.setSpan(sizeSpan, iconIndex + centerSize, iconIndex +
-                            centerSize + 1, Spanned
+                    stringBuilder.setSpan(sizeSpan, iconIndex + centerSize, iconIndex + centerSize + 1, Spanned
                             .SPAN_EXCLUSIVE_EXCLUSIVE);
                 }
 
@@ -156,11 +164,11 @@ public class EasyTextView extends TextView {
              */
             setRightTextAttr(centerSize, stringBuilder);
         }
-            /*
-             * ==============
-             * 设置icon和字的颜色
-             * ==============
-             */
+        /*
+         * ==============
+         * 设置icon和字的颜色
+         * ==============
+         */
         if (mIconColor != null) {
             int color = mIconColor.getColorForState(getDrawableState(), 0);
             if (color != mCurIconColor) {
@@ -172,17 +180,17 @@ public class EasyTextView extends TextView {
         } else {
             mCurIconColor = getCurrentTextColor();
         }
-            /*
-             * ==============
-             * 设置icon的字的样式
-             * ==============
-             */
+        /*
+         * ==============
+         * 设置icon的字的样式
+         * ==============
+         */
         initTextStyle(mTextCenterStyle, stringBuilder, iconIndex, iconIndex + centerSize);
-            /*
-             * ==============
-             * 设置左右Span，记得调用前在**所有方法**前先clearSpan(),不然直接build，上一次的span任然保留着
-             * ==============
-             */
+        /*
+         * ==============
+         * 设置左右Span，记得调用前在**所有方法**前先clearSpan(),不然直接build，上一次的span任然保留着
+         * ==============
+         */
         if (leftContainer != null) {
             for (SpanContainer container : leftContainer) {
                 for (Object o : container.spans) {
@@ -199,8 +207,7 @@ public class EasyTextView extends TextView {
             for (SpanContainer container : rightContainer) {
                 for (Object o : container.spans) {
                     try {
-                        stringBuilder.setSpan(o, start + container.start, start + container.end,
-                                container.flag);
+                        stringBuilder.setSpan(o, start + container.start, start + container.end, container.flag);
                     } catch (Exception e) {
                         //please check invoke clearSpan() method first
                     }
@@ -214,23 +221,23 @@ public class EasyTextView extends TextView {
     private void setRightTextAttr(int centerSize, SpannableStringBuilder stringBuilder) {
         if (!TextUtils.isEmpty(mTextRight)) {
             int start = mTextPadding == 0 ? iconIndex + centerSize : iconIndex + centerSize + 1;
-           /*
-            * ==============
-            * 设置右边字的粗体和斜体
-            * ==============
-            */
+            /*
+             * ==============
+             * 设置右边字的粗体和斜体
+             * ==============
+             */
             initTextStyle(mTextRightStyle, stringBuilder, start, stringBuilder.length());
-           /*
-            * ==============
-            * 设置右边字的颜色
-            * ==============
-            */
+            /*
+             * ==============
+             * 设置右边字的颜色
+             * ==============
+             */
             initTextRightColor(stringBuilder, start);
-           /*
-            * ==============
-            * 设置右边字的大小
-            * ==============
-            */
+            /*
+             * ==============
+             * 设置右边字的大小
+             * ==============
+             */
             initTextSize(stringBuilder, start, stringBuilder.length(), mRightSize, mCurRightColor);
         }
     }
@@ -273,8 +280,7 @@ public class EasyTextView extends TextView {
         }
     }
 
-    private void initTextSize(SpannableStringBuilder stringBuilder, int start, int end, float
-            textSize, int mCurColor) {
+    private void initTextSize(SpannableStringBuilder stringBuilder, int start, int end, float textSize, int mCurColor) {
         if (textSize != 0) {
             CharacterStyle sizeSpan;
             final int gravity = getGravity() & Gravity.VERTICAL_GRAVITY_MASK;
@@ -302,8 +308,7 @@ public class EasyTextView extends TextView {
         }
     }
 
-    private void initTextStyle(int textStyle, SpannableStringBuilder stringBuilder, int start,
-                               int end) {
+    private void initTextStyle(int textStyle, SpannableStringBuilder stringBuilder, int start, int end) {
         StyleSpan span;
         if (textStyle != Typeface.NORMAL) {
             span = new StyleSpan(textStyle);
@@ -430,6 +435,14 @@ public class EasyTextView extends TextView {
     }
 
     /**
+     * 设置radius
+     */
+    public void setRadius(int radius) {
+        this.mRadius = radius;
+        setShape();
+    }
+
+    /**
      * 设置icon颜色
      */
     public void setIconColor(int color) {
@@ -446,10 +459,26 @@ public class EasyTextView extends TextView {
     }
 
     /**
+     * 设置左文案
+     */
+    public void setTextLeft(@StringRes int textLeft) {
+        this.mTextLeft = mContext.getString(textLeft);
+        build();
+    }
+
+    /**
      * 设置右文案
      */
     public void setTextRight(CharSequence textRight) {
         this.mTextRight = textRight;
+        build();
+    }
+
+    /**
+     * 设置右文案
+     */
+    public void setTextRight(@StringRes int textRight) {
+        this.mTextRight = mContext.getString(textRight);
         build();
     }
 
@@ -490,6 +519,22 @@ public class EasyTextView extends TextView {
      */
     public void setIcon(String iconText) {
         this.iconString = iconText;
+        build();
+    }
+
+    /**
+     * 设置Icon
+     */
+    public void setIcon(CharSequence iconText) {
+        this.iconString = iconText;
+        build();
+    }
+
+    /**
+     * 设置Icon
+     */
+    public void setIcon(@StringRes int iconText) {
+        this.iconString = mContext.getString(iconText);
         build();
     }
 
@@ -561,6 +606,23 @@ public class EasyTextView extends TextView {
         spanRight(object, start, end, flags);
         build();
     }
+
+    /**
+     * 设置文字padding
+     */
+    public void setTextPadding(float textPadding) {
+        this.mTextPadding = textPadding;
+        build();
+    }
+
+    /**
+     * 设置三段文字颜色
+     */
+    public void setAllTextColor(@ColorInt int color) {
+        allTextColor(color);
+        build();
+    }
+
     //=================================链式调用##需要最后调用build()==================================
 
     /**
@@ -595,6 +657,14 @@ public class EasyTextView extends TextView {
         return this;
     }
 
+    /**
+     * 设置radius
+     */
+    public EasyTextView radius(int radius) {
+        this.mRadius = radius;
+        return this;
+    }
+
 
     /**
      * 设置icon颜色
@@ -613,10 +683,26 @@ public class EasyTextView extends TextView {
     }
 
     /**
+     * 设置左文案
+     */
+    public EasyTextView textLeft(@StringRes int textLeft) {
+        this.mTextLeft = mContext.getString(textLeft);
+        return this;
+    }
+
+    /**
      * 设置右文案
      */
     public EasyTextView textRight(String textRight) {
         this.mTextRight = textRight;
+        return this;
+    }
+
+    /**
+     * 设置右文案
+     */
+    public EasyTextView textRight(@StringRes int textRight) {
+        this.mTextRight = mContext.getString(textRight);
         return this;
     }
 
@@ -657,6 +743,14 @@ public class EasyTextView extends TextView {
      */
     public EasyTextView icon(String iconText) {
         this.iconString = iconText;
+        return this;
+    }
+
+    /**
+     * 设置Icon
+     */
+    public EasyTextView icon(@StringRes int iconText) {
+        this.iconString = mContext.getString(iconText);
         return this;
     }
 
@@ -729,6 +823,32 @@ public class EasyTextView extends TextView {
     }
 
     /**
+     * 设置文字padding
+     */
+    public EasyTextView textPadding(float textPadding) {
+        this.mTextPadding = textPadding;
+        return this;
+    }
+
+    /**
+     * 设置三段文字颜色
+     */
+    public EasyTextView allTextColor(@ColorInt int color) {
+        ColorStateList temp = ColorStateList.valueOf(color);
+        this.mIconColor = temp;
+        this.mLeftColor = temp;
+        this.mRightColor = temp;
+        return this;
+    }
+
+    /**
+     * 获取中间的文案
+     */
+    public CharSequence getIconStr() {
+        return iconString;
+    }
+
+    /**
      * 防止重复初始化，最后调用build
      */
     public EasyTextView build() {
@@ -738,16 +858,16 @@ public class EasyTextView extends TextView {
         return this;
     }
 
-    @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        if (autoMaxHeight) {
+        if(this.autoMaxHeight) {
             int lead = 0;
-            if (getPaint() != null) {
-                lead = getPaint().getFontMetricsInt().leading * 3;
+            if(this.getPaint() != null) {
+                lead = this.getPaint().getFontMetricsInt().leading * 3;
             }
-            setMeasuredDimension(getMeasuredWidth(), (int) (Math.max(getMeasuredHeight(), Math.max
-                    (mLeftSize, mRightSize)) + lead));
+
+            this.setMeasuredDimension(this.getMeasuredWidth(), (int)(Math.max((float)this.getMeasuredHeight(), Math.max(this.mLeftSize, this.mRightSize)) + (float)lead));
         }
+
     }
 }
