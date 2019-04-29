@@ -39,7 +39,7 @@ dependencies {
 	}
 ```
 ### 效果
- <img src="https://github.com/DrownCoder/EasyTextView/blob/master/WX20180614-214347%402x.png" width = "362" height = "642" alt="自由发挥想象空间" align=center />  
+ <img src="https://github.com/DrownCoder/EasyTextView/blob/master/easttextview_demo.jpg" width = "362" height = "642" alt="自由发挥想象空间" align=center />  
  
 ### 使用  
 #### xml属性
