@@ -171,7 +171,8 @@ public void addSpanRight(Object object, int start, int end, int flags);
 
 ### 版本更新
 v1.14
->新增xml中支持设置渐变色
+>新增xml中支持设置渐变色  
+
 v1.13
 >1.修改icon类型从String改为charsequence
 >2.进一步拓展JAVA的API
