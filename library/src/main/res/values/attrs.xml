@@ -7,17 +7,22 @@
             <enum name="oval" value="1" />
             <enum name="LINE" value="2" />
         </attr>
-        <attr name="totalRadius"  format="dimension"/>
-        <attr name="radiusTopLeft" format="dimension"/>
-        <attr name="radiusBottomLeft" format="dimension"/>
-        <attr name="radiusTopRight" format="dimension"/>
-        <attr name="radiusBottomRight" format="dimension"/>
-        <attr name="strokeColor"  format="color"/>
+        <attr name="totalRadius" format="dimension" />
+        <attr name="radiusTopLeft" format="dimension" />
+        <attr name="radiusBottomLeft" format="dimension" />
+        <attr name="radiusTopRight" format="dimension" />
+        <attr name="radiusBottomRight" format="dimension" />
+        <attr name="strokeColor" format="color" />
         <attr name="strokeWidth" format="dimension" />
-        <attr name="soildBac" format="color"/>
-        <attr name="textPadding" format="dimension"/>
-        <attr name="textLeft" format="reference|string"/>
-        <attr name="textRight" format="reference|string"/>
+        <attr name="soildBac" format="color" />
+        <attr name="textPadding" format="dimension" />
+        <attr name="textLeft" format="string" />
+        <attr name="textRight" format="string" />
+        <attr name="iconColor" format="reference|color" />
+        <attr name="textLeftColor" format="reference|color" />
+        <attr name="textRightColor" format="reference|color" />
+        <attr name="textLeftSize" format="dimension" />
+        <attr name="textRightSize" format="dimension" />
         <attr name="textLeftStyle">
             <enum name="bold" value="1" />
             <enum name="italic" value="2" />
@@ -30,11 +35,19 @@
             <enum name="bold" value="1" />
             <enum name="italic" value="2" />
         </attr>
-        <attr name="iconColor" format="reference|color"/>
-        <attr name="textLeftColor" format="reference|color"/>
-        <attr name="textRightColor" format="reference|color"/>
-        <attr name="textLeftSize" format="dimension"/>
-        <attr name="textRightSize" format="dimension"/>
-        <attr name="autoMaxHeight" format="boolean"/>
+        <attr name="autoMaxHeight" format="boolean" />
+        <attr name="gradientOrientation">
+            <enum name="top_bottom" value="0" />
+            <enum name="tp_bl" value="1" />
+            <enum name="right_left" value="2" />
+            <enum name="br_tl" value="3" />
+            <enum name="bottom_top" value="4" />
+            <enum name="bl_tr" value="5" />
+            <enum name="left_right" value="6" />
+            <enum name="tl_br" value="7" />
+        </attr>
+        <attr name="startSolid" format="reference|color" />
+        <attr name="centerSolid" format="reference|color" />
+        <attr name="endSolid" format="reference|color" />
     </declare-styleable>
 </resources>

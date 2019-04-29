@@ -85,6 +85,7 @@
 
         <com.study.xuan.library.widget.EasyTextView
             android:layout_marginLeft="20dp"
+            android:id="@+id/etv_address"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:textLeft="坐标:"
@@ -95,12 +96,11 @@
             android:text="&#xe63f;"
             app:textRight="北京"
             android:gravity="center"
-            app:textPadding="4dp"
+            android:includeFontPadding="false"
             app:textRightColor="@color/black"
             android:padding="4dp"
             app:totalRadius="4dp"
-            app:soildBac="@color/white"
-            />
+            app:soildBac="@color/white" />
     </LinearLayout>
 
 
@@ -110,14 +110,14 @@
         android:orientation="horizontal"
         android:background="@color/lightblack"
         android:layout_marginTop="10dp"
-        android:gravity="center_vertical"
-        >
+        android:gravity="center_vertical">
+
         <TextView
             android:layout_marginLeft="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="span样式："
-            />
+            android:text="span样式：" />
+
         <com.study.xuan.library.widget.EasyTextView
             android:id="@+id/easyText"
             android:paddingTop="5dp"
@@ -390,9 +390,9 @@
             android:layout_marginLeft="10dp"
             android:gravity="center_vertical"
             android:padding="5dp"
-            android:text="中间文字"
+            android:text="渐变"
             app:textCenterStyle="bold"
-            android:textColor="#494949"
+            android:textColor="@color/white"
             app:textLeft="@string/icon_font"
             app:textRight="@string/icon_font"
             android:textSize="12dp"
@@ -400,23 +400,12 @@
             app:radiusBottomRight="2dp"
             app:radiusTopLeft="15dp"
             app:radiusTopRight="8dp"
-            app:soildBac="@color/bohegreen"
+            app:gradientOrientation="left_right"
+            app:startSolid="@color/bohegreen"
+            app:endSolid="@color/colorPrimary"
             app:strokeColor="@color/bohegreen"
             app:textPadding="5dp" />
 
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp" />
-
-    <!--<android.support.v7.widget.RecyclerView
-        android:id="@+id/rcy"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone"
-        />-->
 
 </LinearLayout>

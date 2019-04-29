@@ -13,6 +13,7 @@
 * 链式调用
 * 支持给iconfont左右设置文字
 * 支持xml中直接设置常用shape的所有属性
+* 支持渐变背景色，边线，纯色背景色，圆角等
 * 支持分别设置iconfont，左文字，右文字的颜色（Selector也可以）、字号、样式（粗体、斜体）
 * 支持左边文字，中间文字，右边文字都设置iconfont
 * 支持文字和iconfont居中
@@ -39,7 +40,7 @@ dependencies {
 	}
 ```
 ### 效果
- <img src="https://github.com/DrownCoder/EasyTextView/blob/master/easttextview_demo.jpg" width = "362" height = "642" alt="自由发挥想象空间" align=center />  
+ <img src="https://github.com/DrownCoder/EasyTextView/blob/master/EasyTextView.jpg" width = "362" height = "642" alt="自由发挥想象空间" align=center />
  
 ### 使用  
 #### xml属性
@@ -108,7 +109,22 @@ dependencies {
             <enum name="bold" value="1" />
             <enum name="italic" value="2" />
         </attr>
-	<attr name="autoMaxHeight" format="boolean"/>
+        <attr name="autoMaxHeight" format="boolean" />
+     //渐变色方向
+        <attr name="gradientOrientation">
+            <enum name="top_bottom" value="0" />
+            <enum name="tp_bl" value="1" />
+            <enum name="right_left" value="2" />
+            <enum name="br_tl" value="3" />
+            <enum name="bottom_top" value="4" />
+            <enum name="bl_tr" value="5" />
+            <enum name="left_right" value="6" />
+            <enum name="tl_br" value="7" />
+        </attr>
+     //渐变色的起始色，中间色，末尾色
+        <attr name="startSolid" format="reference|color" />
+        <attr name="centerSolid" format="reference|color" />
+        <attr name="endSolid" format="reference|color" />
     </declare-styleable>
 ```
 #### java Api
@@ -154,12 +170,14 @@ public void addSpanRight(Object object, int start, int end, int flags);
 详细使用说明参考[Wiki](https://github.com/DrownCoder/EasyTextView/wiki)
 
 ### 版本更新
-v1.13 
->1.修改icon类型从String改为charsequence  
->2.进一步拓展JAVA的API  
->3.补充Error信息  
+v1.14
+>新增xml中支持设置渐变色
+v1.13
+>1.修改icon类型从String改为charsequence
+>2.进一步拓展JAVA的API
+>3.补充Error信息
 
-v1.12 
+v1.12
 >1.修复center_vertical时文字重叠问题  
 >2.新增boolean型autoMaxHeight属性,当为true时解决以下问题  
 >-修复左右文字大小大于中间文字大小高度不准问题  

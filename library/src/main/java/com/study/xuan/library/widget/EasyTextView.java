@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;
+import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.ColorInt;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
@@ -82,6 +83,12 @@ public class EasyTextView extends TextView {
     private int iconIndex = 0;
     //是否开启计算文字边界，开启后会以最大文字大小为View高度，并且会增加部分文字高度，防止部分英文类型y,g由于基线的原因无法显示完全
     private boolean autoMaxHeight;
+    //渐变色
+    private ColorStateList startColor = null;
+    private ColorStateList centerColor = null;
+    private ColorStateList endColor = null;
+    //渐变方向
+    GradientDrawable.Orientation orientation;
 
     public EasyTextView(Context context) {
         this(context, null);
@@ -146,8 +153,8 @@ public class EasyTextView extends TextView {
 
                 if (!TextUtils.isEmpty(mTextRight)) {
                     AbsoluteSizeSpan sizeSpan = new AbsoluteSizeSpan((int) mTextPadding);
-                    stringBuilder.setSpan(sizeSpan, iconIndex + centerSize, iconIndex + centerSize + 1, Spanned
-                            .SPAN_EXCLUSIVE_EXCLUSIVE);
+                    stringBuilder.setSpan(sizeSpan, iconIndex + centerSize, iconIndex +
+                            centerSize + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 }
 
             }
@@ -207,7 +214,8 @@ public class EasyTextView extends TextView {
             for (SpanContainer container : rightContainer) {
                 for (Object o : container.spans) {
                     try {
-                        stringBuilder.setSpan(o, start + container.start, start + container.end, container.flag);
+                        stringBuilder.setSpan(o, start + container.start, start + container.end,
+                                container.flag);
                     } catch (Exception e) {
                         //please check invoke clearSpan() method first
                     }
@@ -280,7 +288,8 @@ public class EasyTextView extends TextView {
         }
     }
 
-    private void initTextSize(SpannableStringBuilder stringBuilder, int start, int end, float textSize, int mCurColor) {
+    private void initTextSize(SpannableStringBuilder stringBuilder, int start, int end, float
+            textSize, int mCurColor) {
         if (textSize != 0) {
             CharacterStyle sizeSpan;
             final int gravity = getGravity() & Gravity.VERTICAL_GRAVITY_MASK;
@@ -308,7 +317,8 @@ public class EasyTextView extends TextView {
         }
     }
 
-    private void initTextStyle(int textStyle, SpannableStringBuilder stringBuilder, int start, int end) {
+    private void initTextStyle(int textStyle, SpannableStringBuilder stringBuilder, int start,
+                               int end) {
         StyleSpan span;
         if (textStyle != Typeface.NORMAL) {
             span = new StyleSpan(textStyle);
@@ -327,14 +337,53 @@ public class EasyTextView extends TextView {
     }
 
     private void setShape() {
+        ShapeBuilder shapeBuilder;
         if (mRadius != 0) {
-            ShapeBuilder.create().Type(type).Radius(mRadius).Soild(mSoild).Stroke
-                    (mStrokeWidth, mStrokeColor).build(this);
+            shapeBuilder = ShapeBuilder.create().Type(type).Radius(mRadius).Stroke
+                    (mStrokeWidth, mStrokeColor);
         } else {
-            ShapeBuilder.create().Type(type).Radius(mRadiusTopLeft,
-                    mRadiusTopRight, mRadiusBottomLeft, mRadiusBottomRight).Soild(mSoild).Stroke
-                    (mStrokeWidth, mStrokeColor).build(this);
+            shapeBuilder = ShapeBuilder.create().Type(type).Radius(mRadiusTopLeft,
+                    mRadiusTopRight, mRadiusBottomLeft, mRadiusBottomRight).Stroke
+                    (mStrokeWidth, mStrokeColor);
         }
+        if (orientation != null && startColor != null && endColor != null) {
+            //渐变
+            if (centerColor != null) {
+                shapeBuilder.Gradient(orientation, getColor(startColor), getColor(centerColor),
+                        getColor(endColor));
+            } else {
+                shapeBuilder.GradientInit(orientation, getColor(startColor), getColor(endColor));
+            }
+        } else {
+            shapeBuilder.Solid(mSoild);
+        }
+        shapeBuilder.build(this);
+    }
+
+    private int getColor(ColorStateList color) {
+        return color.getColorForState(getDrawableState(), 0);
+    }
+
+    private GradientDrawable.Orientation switchEnumToOrientation(int orientation) {
+        switch (orientation) {
+            case 0:
+                return GradientDrawable.Orientation.TOP_BOTTOM;
+            case 1:
+                return GradientDrawable.Orientation.TR_BL;
+            case 2:
+                return GradientDrawable.Orientation.RIGHT_LEFT;
+            case 3:
+                return GradientDrawable.Orientation.BR_TL;
+            case 4:
+                return GradientDrawable.Orientation.BOTTOM_TOP;
+            case 5:
+                return GradientDrawable.Orientation.BL_TR;
+            case 6:
+                return GradientDrawable.Orientation.LEFT_RIGHT;
+            case 7:
+                return GradientDrawable.Orientation.TL_BR;
+        }
+        return GradientDrawable.Orientation.LEFT_RIGHT;
     }
 
     private void clearText() {
@@ -377,8 +426,6 @@ public class EasyTextView extends TextView {
                 mTextRight = textValue.string;
             }
         }
-        //mTextLeft = array.getString(R.styleable.EasyTextView_textLeft);
-        //mTextRight = array.getString(R.styleable.EasyTextView_textRight);
         mIconColor = array.getColorStateList(R.styleable.EasyTextView_iconColor);
         mLeftColor = array.getColorStateList(R.styleable.EasyTextView_textLeftColor);
         mRightColor = array.getColorStateList(R.styleable.EasyTextView_textRightColor);
@@ -388,6 +435,11 @@ public class EasyTextView extends TextView {
         mTextRightStyle = array.getInt(R.styleable.EasyTextView_textRightStyle, Typeface.NORMAL);
         mTextCenterStyle = array.getInt(R.styleable.EasyTextView_textCenterStyle, Typeface.NORMAL);
         autoMaxHeight = array.getBoolean(R.styleable.EasyTextView_autoMaxHeight, false);
+        orientation = switchEnumToOrientation(array.getInt(R.styleable
+                .EasyTextView_gradientOrientation, 0));
+        startColor = array.getColorStateList(R.styleable.EasyTextView_startSolid);
+        centerColor = array.getColorStateList(R.styleable.EasyTextView_centerSolid);
+        endColor = array.getColorStateList(R.styleable.EasyTextView_endSolid);
         array.recycle();
     }
 
@@ -859,14 +911,19 @@ public class EasyTextView extends TextView {
     }
 
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        if(this.autoMaxHeight) {
+        try {
+            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        } catch (Exception e) {
+
+        }
+        if (this.autoMaxHeight) {
             int lead = 0;
-            if(this.getPaint() != null) {
+            if (this.getPaint() != null) {
                 lead = this.getPaint().getFontMetricsInt().leading * 3;
             }
-
-            this.setMeasuredDimension(this.getMeasuredWidth(), (int)(Math.max((float)this.getMeasuredHeight(), Math.max(this.mLeftSize, this.mRightSize)) + (float)lead));
+            this.setMeasuredDimension(this.getMeasuredWidth(), (int) (Math.max((float) this
+                    .getMeasuredHeight(), Math.max(this.mLeftSize, this.mRightSize)) + (float)
+                    lead));
         }
 
     }
