@@ -56,7 +56,9 @@ public class EasyTextView extends TextView {
     private Context mContext;
     private int type = RECTANGLE;
     private float mRadius;
+    @Deprecated //左下和右下反了，所以失效
     private float mRadiusTopLeft, mRadiusTopRight, mRadiusBottomLeft, mRadiusBottomRight;
+    private float mTopLeftRadius, mTopRightRadius, mBottomLeftRadius, mBottomRightRadius;
     private int mStrokeColor;
     private int mStrokeWidth;
     private int mSoild;
@@ -327,9 +329,10 @@ public class EasyTextView extends TextView {
     }
 
     private void initShape() {
-        if (mRadius == -0 && mRadiusTopLeft == 0 && mRadiusTopRight == 0 && mRadiusBottomLeft == 0
-                && mRadiusBottomRight == 0 && mStrokeColor == -1 && mStrokeWidth == 0 && mSoild ==
-                -1) {
+        if (mRadius == -0 && mStrokeColor == -1 && mStrokeWidth == 0 && mSoild ==
+                -1 && mTopLeftRadius == 0 && mTopRightRadius == 0 && mBottomLeftRadius == 0 &&
+                mBottomRightRadius == 0 && mRadiusTopLeft == 0 && mRadiusTopRight == 0 &&
+                mRadiusBottomLeft == 0 && mRadiusBottomRight == 0) {
             return;
         } else {
             setShape();
@@ -342,9 +345,15 @@ public class EasyTextView extends TextView {
             shapeBuilder = ShapeBuilder.create().Type(type).Radius(mRadius).Stroke
                     (mStrokeWidth, mStrokeColor);
         } else {
-            shapeBuilder = ShapeBuilder.create().Type(type).Radius(mRadiusTopLeft,
-                    mRadiusTopRight, mRadiusBottomLeft, mRadiusBottomRight).Stroke
-                    (mStrokeWidth, mStrokeColor);
+            if (mTopRightRadius != 0 || mTopLeftRadius != 0 || mBottomRightRadius != 0 || mBottomLeftRadius != 0) {
+                shapeBuilder = ShapeBuilder.create().Type(type).RoundRadius(mTopLeftRadius,
+                        mTopRightRadius, mBottomLeftRadius, mBottomRightRadius).Stroke
+                        (mStrokeWidth, mStrokeColor);
+            }else{
+                shapeBuilder = ShapeBuilder.create().Type(type).Radius(mRadiusTopLeft,
+                        mRadiusTopRight, mRadiusBottomLeft, mRadiusBottomRight).Stroke
+                        (mStrokeWidth, mStrokeColor);
+            }
         }
         if (orientation != null && startColor != null && endColor != null) {
             //渐变
@@ -355,7 +364,7 @@ public class EasyTextView extends TextView {
                 shapeBuilder.GradientInit(orientation, getColor(startColor), getColor(endColor));
             }
         } else {
-            shapeBuilder.Solid(mSoild);
+            shapeBuilder.Soild(mSoild);
         }
         shapeBuilder.build(this);
     }
@@ -402,6 +411,11 @@ public class EasyTextView extends TextView {
                 0);
         mRadiusBottomRight = array.getDimensionPixelSize(R.styleable
                 .EasyTextView_radiusBottomRight, 0);
+        mTopLeftRadius = array.getDimensionPixelSize(R.styleable.EasyTextView_topLeft, 0);
+        mTopRightRadius = array.getDimensionPixelSize(R.styleable.EasyTextView_topRight, 0);
+        mBottomLeftRadius = array.getDimensionPixelSize(R.styleable.EasyTextView_bottomLeft, 0);
+        mBottomRightRadius = array.getDimensionPixelSize(R.styleable.EasyTextView_bottomRight, 0);
+
         mStrokeColor = array.getColor(R.styleable.EasyTextView_strokeColor, -1);
         mStrokeWidth = array.getDimensionPixelOffset(R.styleable.EasyTextView_strokeWidth, 0);
         mSoild = array.getColor(R.styleable.EasyTextView_soildBac, -1);

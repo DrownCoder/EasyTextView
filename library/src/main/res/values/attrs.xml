@@ -2,16 +2,23 @@
 <resources>
     <!--自定义TextView目前支持圆角和边线颜色和宽度,iconFont左右text,padding等-->
     <declare-styleable name="EasyTextView">
-        <attr name="shapeType" format="integer|enum" >
+        <attr name="shapeType" format="integer|enum">
             <enum name="rectangle" value="0" />
             <enum name="oval" value="1" />
             <enum name="LINE" value="2" />
         </attr>
         <attr name="totalRadius" format="dimension" />
+        <!--@Deprecated 左下和右下反了，所以失效弃用，
+        换用topLeftRadius/topRightRadius/bottomLeftRadius/bottomRightRadius-->
         <attr name="radiusTopLeft" format="dimension" />
         <attr name="radiusBottomLeft" format="dimension" />
         <attr name="radiusTopRight" format="dimension" />
         <attr name="radiusBottomRight" format="dimension" />
+        <!--四个角的圆角-->
+        <attr name="topLeft" format="dimension" />
+        <attr name="topRight" format="dimension" />
+        <attr name="bottomLeft" format="dimension" />
+        <attr name="bottomRight" format="dimension" />
         <attr name="strokeColor" format="color" />
         <attr name="strokeWidth" format="dimension" />
         <attr name="soildBac" format="color" />

@@ -31,5 +31,5 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:26.+'
     testCompile 'junit:junit:4.12'
-    compile 'com.github.sdfdzx:SupperShape:v1.0.3'
+    compile 'com.github.sdfdzx:SupperShape:v1.0.4'
 }
