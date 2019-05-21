@@ -65,13 +65,13 @@ dependencies {
         //四个角的圆角
         <attr name="totalRadius"  format="dimension"/>
         //左上角
-        <attr name="radiusTopLeft" format="dimension"/>
+        <attr name="topLeft" format="dimension"/>
         //左下角
-        <attr name="radiusBottomLeft" format="dimension"/>
+        <attr name="bottomLeft" format="dimension"/>
         //右上角
-        <attr name="radiusTopRight" format="dimension"/>
+        <attr name="topRight" format="dimension"/>
         //右下角
-        <attr name="radiusBottomRight" format="dimension"/>
+        <attr name="bottomRight" format="dimension"/>
         //边线的颜色
         <attr name="strokeColor"  format="color"/>
         //边线的宽度
@@ -170,6 +170,8 @@ public void addSpanRight(Object object, int start, int end, int flags);
 详细使用说明参考[Wiki](https://github.com/DrownCoder/EasyTextView/wiki)
 
 ### 版本更新
+v1.15
+新增api修复左下和右下圆角颠倒的bug  
 v1.14
 >新增xml中支持设置渐变色  
 
