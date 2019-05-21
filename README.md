@@ -170,8 +170,8 @@ public void addSpanRight(Object object, int start, int end, int flags);
 详细使用说明参考[Wiki](https://github.com/DrownCoder/EasyTextView/wiki)
 
 ### 版本更新
-v1.15
-新增api修复左下和右下圆角颠倒的bug  
+v1.15  
+>新增api修复左下和右下圆角颠倒的bug  
 v1.14
 >新增xml中支持设置渐变色  
 
